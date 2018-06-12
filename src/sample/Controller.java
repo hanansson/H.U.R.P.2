@@ -125,4 +125,12 @@ public class Controller implements Initializable {
 
     }
 
+    public void loeschen (ActionEvent event) {
+
+    }
+
+    public void beenden (ActionEvent event) {
+        System.exit(0);
+    }
+
 }
