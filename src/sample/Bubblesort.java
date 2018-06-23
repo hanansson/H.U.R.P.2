@@ -13,7 +13,6 @@ public class Bubblesort {
         Comparator<Produkt> comparator = new NameComparator();
         bubblesort(list, comparator);
 
-
     }
 
 

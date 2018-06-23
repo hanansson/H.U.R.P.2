@@ -1,20 +1,16 @@
 package sample;
 
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.CheckBoxListCell;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.util.Callback;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import javax.swing.*;
 import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
@@ -37,10 +33,10 @@ public class Controller implements Initializable {
     public TableView tabelle;
     JSONObject produktJ = new JSONObject();
     public ArrayList<Produkt> vorratP = new ArrayList<>();;
-    TableColumn nameRow = new TableColumn("");
-    TableColumn artRow = new TableColumn("");
-    TableColumn anzahlRow = new TableColumn("");
-    TableColumn auswahlRow = new TableColumn("");
+    TableColumn nameColumn = new TableColumn("");
+    TableColumn artColumn = new TableColumn("");
+    TableColumn anzahlColumn = new TableColumn("");
+    //**TableColumn auswahlColumn = new TableColumn("");
     //****Vielleicht reicht auch hier das Erstellen einer ObservableList.
 
     @Override
@@ -51,10 +47,13 @@ public class Controller implements Initializable {
 
         //****Vielleicht müssen hier die TableColumns initialisiert werden.
 
-        tabelle.getColumns().addAll( nameRow, artRow, anzahlRow, auswahlRow);
+        //Gibt der Tabelle die Spalten/Kolumnen.
+        tabelle.getColumns().addAll( nameColumn, artColumn, anzahlColumn);
 
         BufferedReader br = null;
         JSONParser parser = new JSONParser();
+
+
 
         try {
 
@@ -80,6 +79,7 @@ public class Controller implements Initializable {
                 String art1 = (String) produktJ.get("art");
                 produkt.setName(name1);
                 produkt.setArt(art1);
+                //*Produkte bekommen zum testen zufällige Mengen.
                 produkt.setAnzahl((int)(Math.random() * 10)+1);
                 vorratP.add(produkt);
                 System.out.print(produkt.getAnzahl());
@@ -96,6 +96,8 @@ public class Controller implements Initializable {
             }
         }
 
+
+
         //Wenn der Vorrat(ArrayList) mehr als ein Produkt enthält, dann wird mit Bubblesort sortiert und der Vorrat wird in der Tabelle sortiert ausgegeben.
         //Damit der Vorrat eingelesen werden kann, wird aus Basis der ArrayList eine ObservableList erstellt. Da javafx-Elemente nur mit ObservableLists arbeiten können.
         if(vorratP.size() > 1) {
@@ -105,14 +107,16 @@ public class Controller implements Initializable {
             tabelle.setItems(vorratO1);
         }
 
+
             //Fügt Kolumnen/Spalten hinzu.
-            nameRow.setCellValueFactory(new PropertyValueFactory<Produkt, String>("Name"));
-            artRow.setCellValueFactory(new PropertyValueFactory<Produkt, String>("Art"));
-            anzahlRow.setCellValueFactory(new PropertyValueFactory<Produkt, Integer>("Anzahl"));
+            nameColumn.setCellValueFactory(new PropertyValueFactory<Produkt, String>("Name"));
+            artColumn.setCellValueFactory(new PropertyValueFactory<Produkt, String>("Art"));
+            anzahlColumn.setCellValueFactory(new PropertyValueFactory<Produkt, Integer>("Anzahl"));
+
 
         //Fügt Spinner zu jedem Produkteintrag hinzu.
-        //****Die Werte aus den einzelnen Zellen müssen veränderbar sein und müssen sich irgendwie wieder in die ArrayList einlesen lassen.
-            anzahlRow.setCellFactory(new Callback<TableColumn<Produkt,Integer>,TableCell<Produkt,Integer>>(){
+        //****Die Werte aus den einzelnen Spinnerzellen müssen veränderbar sein und müssen sich irgendwie wieder in die ArrayList einlesen lassen.
+            /*anzahlColumn.setCellFactory(new Callback<TableColumn<Produkt,Integer>,TableCell<Produkt,Integer>>(){
             @Override
             public TableCell<Produkt, Integer> call(TableColumn<Produkt, Integer> param) {
                 TableCell<Produkt, Integer> cell = new TableCell<Produkt, Integer>(){
@@ -127,14 +131,16 @@ public class Controller implements Initializable {
                 };
                 return cell;
             }
-        });
+        });*/
 
-            //sortierenName-Button wird im Spaltenkopf eingesetzt. Dazu werden Grafikeinstellungen vorgenommen(unwichtig).
-            // Der eigentlich Spaltenkopf, wird deaktiviert -> nameRow.setSortable(false);
+
+
+            //sortierenName-Button wird im Kolumnentitel eingesetzt. Dazu werden Grafikeinstellungen vorgenommen(unwichtig).
+            //Der eigentlich Kolumnentitel, wird deaktiviert -> nameColumn.setSortable(false);
             sortierenName.setStyle("-fx-background-color: transparent");
-            sortierenName.setPrefSize(nameRow.getPrefWidth(), 2);
-            nameRow.setGraphic(sortierenName);
-            nameRow.setSortable(false);
+            sortierenName.setPrefSize(nameColumn.getPrefWidth(), 2);
+            nameColumn.setGraphic(sortierenName);
+            nameColumn.setSortable(false);
             sortierenName.setMaxSize(2000,2000);
 
             //sortiereName-Button kriegt seine Funktion: Sortiert ArrayList aus Produkten mit Bubblesort-Methode.
@@ -149,32 +155,35 @@ public class Controller implements Initializable {
                 }
             });
 
-        //sortierenArt-Button wird im Spaltenkopf eingesetzt.
+
+        //sortierenArt-Button wird im Kolumnentitel eingesetzt.
         sortierenArt.setStyle("-fx-background-color: transparent");
-        sortierenArt.setPrefSize(artRow.getPrefWidth(), 2);
-        artRow.setGraphic(sortierenArt);
-        artRow.setSortable(false);
+        sortierenArt.setPrefSize(artColumn.getPrefWidth(), 2);
+        artColumn.setGraphic(sortierenArt);
+        artColumn.setSortable(false);
         sortierenArt.setMaxSize(2000,2000);
 
-        //sortierenAnzahl-Button wird im Spaltenkopf eingesetzt.
+
+        //sortierenAnzahl-Button wird im Kolumnentitel eingesetzt.
         sortierenAnzahl.setStyle("-fx-background-color: transparent");
-        sortierenAnzahl.setPrefSize(anzahlRow.getPrefWidth(), 2);
-        anzahlRow.setGraphic(sortierenAnzahl);
-        anzahlRow.setSortable(false);
+        sortierenAnzahl.setPrefSize(anzahlColumn.getPrefWidth(), 2);
+        anzahlColumn.setGraphic(sortierenAnzahl);
+        anzahlColumn.setSortable(false);
         sortierenAnzahl.setMaxSize(2000,2000);
 
     }
 
     public void produktHinzufuegen (ActionEvent event) throws IOException {
 
+        //neues Produkt-Objekt wird erstellt. Das
         Produkt produkt = new Produkt("Name", "Art", 1);
-        //Produkt muss in der Methode initialisiert werden!
+        //****Produkt muss in der Methode initialisiert werden!
         produkt.setName(nameEingabe.getText());
         produkt.setArt(artEingabe.getText());
         produkt.setAnzahl(1);
         vorratP.add(produkt);
 
-        //JSONObject produktJ = new JSONObject();
+        //****JSONObject produktJ = new JSONObject();
         String name = nameEingabe.getText();
         String art = artEingabe.getText();
         Integer anzahl = 1;
@@ -183,6 +192,8 @@ public class Controller implements Initializable {
         produktJ.put("anzahl", 1);
 
 
+        //Checkt ob schon eine JSON-Datei besteht. Wenn ja wird ein neues Produkt himzugefügt, wenn nicht wird ne neu Datei erzeugt und ein Produkt reingeschrieben.
+        //Ist aber noch fehlerhaft!
         File f = new File("Vorratsliste.json");
         if (f.exists()) {
 
@@ -205,6 +216,9 @@ public class Controller implements Initializable {
 
     }
 
+
+
+    //Methode wird ausgeführt wenn man den loeschen-Button anklickt.
     public void loeschen (ActionEvent event) {
 
         /*tabelle.getItems().removeAll(tabelle.getSelectionModel().getSelectedItem());
@@ -219,6 +233,7 @@ public class Controller implements Initializable {
 
     }
 
+    //Methode wird ausgeführt wenn man den beenden-Button anklickt.
     public void beenden (ActionEvent event) {
 
         /*for(int i = 0; i == vorratP.size(); i ++){

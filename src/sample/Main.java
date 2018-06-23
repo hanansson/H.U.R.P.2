@@ -6,8 +6,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+
 public class Main extends Application {
 
+    //Lädt die fxml Datei und macht das Programmfenster in angegebener größe sichtbar
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
@@ -16,7 +18,7 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-
+//Nur fürs starten verantwortlich.
     public static void main(String[] args) {
         launch(args);
     }
