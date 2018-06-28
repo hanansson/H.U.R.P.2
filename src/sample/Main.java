@@ -12,9 +12,9 @@ public class Main extends Application {
     //Lädt die fxml Datei und macht das Programmfenster in angegebener größe sichtbar
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("hauptmenu.fxml"));
         primaryStage.setTitle("H.U.R.P");
-        primaryStage.setScene(new Scene(root, 800, 775));
+        primaryStage.setScene(new Scene(root, 400, 500));
         primaryStage.show();
     }
 

@@ -8,9 +8,30 @@ import java.util.Comparator;
 
 public class Bubblesort {
 
+    public void datesort (ArrayList<Produkt> list) {
+
+        Comparator<Produkt> comparator = new DateComparator();
+        bubblesort(list, comparator);
+
+    }
+
+    public void anzahlsort (ArrayList<Produkt> list) {
+
+        Comparator<Produkt> comparator = new AnzahlComparator();
+        bubblesort(list, comparator);
+
+    }
+
     public void namesort(ArrayList<Produkt> list){
 
         Comparator<Produkt> comparator = new NameComparator();
+        bubblesort(list, comparator);
+
+    }
+
+    public void artsort (ArrayList<Produkt> list) {
+
+        Comparator<Produkt> comparator = new ArtComparator();
         bubblesort(list, comparator);
 
     }
