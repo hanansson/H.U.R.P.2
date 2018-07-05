@@ -198,6 +198,7 @@ public class RezeptlisteController implements Initializable {
 
             if(prüfen == zutaten.size()){
                 rezepteSammlung.add(rezept);
+                //System.out.println(test);
             }
         }
 
