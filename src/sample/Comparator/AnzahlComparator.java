@@ -1,4 +1,6 @@
-package sample;
+package sample.Comparator;
+
+import sample.Produkt;
 
 import java.util.Comparator;
 

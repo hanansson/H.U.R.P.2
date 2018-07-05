@@ -1,6 +1,9 @@
 package sample;
 
-import sample.*;
+import sample.Comparator.AnzahlComparator;
+import sample.Comparator.ArtComparator;
+import sample.Comparator.DateComparator;
+import sample.Comparator.NameComparator;
 
 import java.util.ArrayList;
 import java.util.Comparator;

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="paneProduktliste" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller.VorratslisteController">
+   <children>
+      <TextField fx:id="nameEingabe" layoutX="61.0" layoutY="48.0" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="40.0" />
+      <TextField fx:id="artEingabe" layoutX="61.0" layoutY="112.0" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="90.0" />
+      <Button fx:id="hinzufuegen" layoutX="40.0" layoutY="243.0" mnemonicParsing="false" onAction="#produktHinzufuegen" prefHeight="27.0" prefWidth="112.0" text="Hinzufügen" AnchorPane.topAnchor="243.0" />
+      <Button fx:id="loeschen" layoutX="40.0" layoutY="289.0" mnemonicParsing="false" onAction="#loeschen" prefHeight="27.0" prefWidth="112.0" text="Löschen" AnchorPane.topAnchor="289.0" />
+      <Button fx:id="beenden" layoutX="40.0" layoutY="333.0" mnemonicParsing="false" onAction="#beenden" prefHeight="27.0" prefWidth="112.0" text="zurück" AnchorPane.topAnchor="333.0" />
+      <TableView fx:id="tabelle" layoutX="269.0" layoutY="30.0" prefHeight="348.0" prefWidth="308.0" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="40.0" />
+      <Spinner fx:id="anzahlEingabe" layoutX="40.0" layoutY="187.0" />
+      <DatePicker fx:id="datumEingabe" layoutX="40.0" layoutY="138.0" prefHeight="27.0" prefWidth="167.0" />
+      <Button fx:id="zuEinkauf" layoutX="180.0" layoutY="243.0" mnemonicParsing="false" onAction="#produktInEinkaufslisteEinfuegen" prefHeight="27.0" prefWidth="26.0" text="+" />
+   </children>
+</AnchorPane>

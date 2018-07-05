@@ -3,6 +3,7 @@ package sample;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import java.time.LocalDate;
@@ -12,16 +13,24 @@ public class Produkt {
 
     private SimpleStringProperty name;
     private SimpleStringProperty art;
-    private LocalDate datum;
+    //private LocalDate datum;
     //private SimpleIntegerProperty anzahl;
+    DatePicker datum;
     Spinner<Integer> anzahl;
     private CheckBox auswahl;
 
 
-    Produkt(String name, String art, Integer anzahl, LocalDate datum) {
+    public Produkt(String name, String art, Integer anzahl, LocalDate datum) {
         this.name = new SimpleStringProperty(name);
         this.art = new SimpleStringProperty(art);
-        //this.anzahl = new SimpleIntegerProperty(anzahl);
+        this.datum = new DatePicker();
+        this.auswahl = new CheckBox();
+        this.anzahl = new Spinner();
+    }
+
+    public Produkt(String name, String art, Integer anzahl) {
+        this.name = new SimpleStringProperty(name);
+        this.art = new SimpleStringProperty(art);
         this.auswahl = new CheckBox();
         this.anzahl = new Spinner();
     }
@@ -42,7 +51,7 @@ public class Produkt {
         this.art.set(art);
     }
 
-    public LocalDate getDatum() {
+    /*public LocalDate getDatum() {
         return datum;
     }
 
@@ -50,13 +59,19 @@ public class Produkt {
         this.datum = date;
     }
 
-    /*public Integer getAnzahl(){
+    public Integer getAnzahl(){
         return anzahl.get();
     }
 
     public void setAnzahl(Integer anzahl){
         this.anzahl.set(anzahl);
     }*/
+
+    public DatePicker getDatum() {return datum; }
+
+    public void setDatum(DatePicker datum) {
+        this.datum = datum;
+    }
 
     public Spinner getAnzahl(){
         return anzahl;

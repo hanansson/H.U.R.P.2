@@ -1,4 +1,4 @@
-package sample;
+package sample.Comparator;
 
 import sample.Produkt;
 

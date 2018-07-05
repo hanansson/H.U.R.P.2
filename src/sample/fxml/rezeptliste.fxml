@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="400.0" prefWidth="424.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller.RezeptlisteController">
+   <children>
+      <TableView fx:id="rezeptTabelle" layoutX="166.0" layoutY="30.0" prefHeight="341.0" prefWidth="225.0" />
+      <Button fx:id="rezeptButton" layoutX="33.0" layoutY="165.0" mnemonicParsing="false" onAction="#hinzufuegen" prefHeight="27.0" prefWidth="115.0" text="add Rezept" />
+      <Button fx:id="loeschenButton" layoutX="33.0" layoutY="208.0" mnemonicParsing="false" onAction="#loeschen" prefHeight="27.0" prefWidth="115.0" text="löschen" />
+      <Button fx:id="zurueckButton" layoutX="33.0" layoutY="254.0" mnemonicParsing="false" onAction="#zurueck" prefHeight="27.0" prefWidth="115.0" text="zurück" />
+      <Button fx:id="zutatenZurVerfügung" layoutX="33.0" layoutY="119.0" mnemonicParsing="false" onAction="#aussortieren" prefHeight="27.0" prefWidth="115.0" text="zur Verfügung" />
+   </children>
+</AnchorPane>

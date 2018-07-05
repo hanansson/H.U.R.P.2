@@ -1,4 +1,4 @@
-package sample;
+package sample.Comparator;
 
 import sample.Produkt;
 
@@ -9,6 +9,6 @@ public class DateComparator implements Comparator<Produkt> {
 
     @Override
     public int compare(Produkt o1, Produkt o2) {
-        return o1.getDatum().compareTo(o2.getDatum());
+        return o1.getDatum().getValue().compareTo(o2.getDatum().getValue());
     }
 }

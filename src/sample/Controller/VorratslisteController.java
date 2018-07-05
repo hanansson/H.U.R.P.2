@@ -1,16 +1,24 @@
-package sample;
+package sample.Controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import sample.Produkt;
+import sample.Quicksort;
+
 import java.io.*;
 import java.net.URL;
 import java.text.DateFormat;
@@ -23,7 +31,8 @@ import java.util.ResourceBundle;
 
 public class VorratslisteController implements Initializable {
 
-    Bubblesort bubblesort = new Bubblesort();
+    //Bubblesort bubblesort = new Bubblesort();
+    Quicksort quicksort = new Quicksort();
 
     public AnchorPane paneProduktliste;
     public TextField nameEingabe;
@@ -62,8 +71,21 @@ public class VorratslisteController implements Initializable {
 
         //****Vielleicht müssen hier die TableColumns initialisiert werden.
 
+        nameColumn.setPrefWidth(100);
+        artColumn.setPrefWidth(100);
+        ablaufDatumColumn.setPrefWidth(100);
+        anzahlColumn.setPrefWidth(100);
+
         //Gibt der Tabelle die Spalten/Kolumnen.
         tabelle.getColumns().addAll( nameColumn, artColumn, ablaufDatumColumn, anzahlColumn, auswahlColumn);
+
+        /*Produkt produktT = new Produkt("", "", 0, LocalDate.of(1999, 9, 9));
+        String nameT;
+
+        nameColumn.getOnEditCommit().handle(
+                nameT = (String) tabelle.getSelectionModel().getSelectedItem();
+                produktT.setName(nameT);
+                )*/
 
         BufferedReader br = null;
         JSONParser parser = new JSONParser();
@@ -91,17 +113,18 @@ public class VorratslisteController implements Initializable {
                 //Die Variablen werden einem Objekt der Klasse Produkt hinzugefügt und dieses wird in einer ArrayList gespeichert.
                 String name1 = (String) produktJ.get("name");
                 String art1 = (String) produktJ.get("art");
-                String datum1 = (String) produktJ.get("datum");
-                LocalDate datum2 = LocalDate.parse(datum1);
-                System.out.print(datum1);
-                //LocalDate datum1 = LocalDate.of(1999, 9, 9);
+                if(produktJ.get("datum") !=null) {
+                    String datum1 = (String) produktJ.get("datum");
+                    LocalDate datum2 = LocalDate.parse(datum1);
+                    produkt.getDatum().setValue(datum2);
+                } else {
+                    produkt.getDatum().setValue(null);
+                }
                 int anzahl1 = (int) (long) produktJ.get("anzahl");
-                //System.out.print(datum1);
                 produkt.setName(name1);
                 produkt.setArt(art1);
-                produkt.setDatum(datum2);
                 //(System.out.print(produkt.getDatum());
-                produkt.anzahl.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 99, anzahl1));
+                produkt.getAnzahl().setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 99, anzahl1));
                 vorratP.add(produkt);
                 //System.out.print(produkt.getAnzahl());
 
@@ -121,7 +144,8 @@ public class VorratslisteController implements Initializable {
         //Wenn der Vorrat(ArrayList) mehr als ein Produkt enthält, dann wird mit Bubblesort sortiert und der Vorrat wird in der Tabelle sortiert ausgegeben.
         //Damit der Vorrat eingelesen werden kann, wird aus Basis der ArrayList eine ObservableList erstellt. Da javafx-Elemente nur mit ObservableLists arbeiten können.
         if(vorratP.size() > 1) {
-            bubblesort.namesort(vorratP);
+            //bubblesort.namesort(vorratP);
+            quicksort.namequicksort(vorratP);
             ArrayList<Produkt> vorrat02 = new ArrayList<>(vorratP);
             final ObservableList<Produkt> vorratO1 = FXCollections.observableArrayList(vorrat02);
             tabelle.setItems(vorratO1);
@@ -153,10 +177,12 @@ public class VorratslisteController implements Initializable {
             sortierenName.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                    bubblesort.namesort(vorratP);
+                    //bubblesort.namesort(vorratP);
+                    quicksort.namequicksort(vorratP);
                     ArrayList <Produkt> vorrat02 = new ArrayList<>(vorratP);
                     final ObservableList<Produkt> vorratO1 = FXCollections.observableArrayList(vorrat02);
                     tabelle.setItems(vorratO1);
+                    //System.out.println("testname");
                 }
             });
 
@@ -171,10 +197,12 @@ public class VorratslisteController implements Initializable {
         sortierenArt.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                bubblesort.artsort(vorratP);
+                //bubblesort.artsort(vorratP);
+                quicksort.artquicksort(vorratP);
                 ArrayList <Produkt> vorrat02 = new ArrayList<>(vorratP);
                 final ObservableList<Produkt> vorratO1 = FXCollections.observableArrayList(vorrat02);
                 tabelle.setItems(vorratO1);
+                //System.out.println("testart");
             }
         });
 
@@ -188,10 +216,12 @@ public class VorratslisteController implements Initializable {
         sortierenDatum.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                bubblesort.datesort(vorratP);
+                //bubblesort.datesort(vorratP);
+                quicksort.datequicksort(vorratP);
                 ArrayList <Produkt> vorrat02 = new ArrayList<>(vorratP);
                 final ObservableList<Produkt> vorratO1 = FXCollections.observableArrayList(vorrat02);
                 tabelle.setItems(vorratO1);
+                //System.out.println("testdatum");
             }
         });
 
@@ -206,10 +236,12 @@ public class VorratslisteController implements Initializable {
         sortierenAnzahl.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                bubblesort.anzahlsort(vorratP);
+                //bubblesort.anzahlsort(vorratP);
+                quicksort.anzahlquicksort(vorratP);
                 ArrayList <Produkt> vorrat02 = new ArrayList<>(vorratP);
                 final ObservableList<Produkt> vorratO1 = FXCollections.observableArrayList(vorrat02);
                 tabelle.setItems(vorratO1);
+                //System.out.println("testanzahl");
             }
         });
 
@@ -241,16 +273,17 @@ public class VorratslisteController implements Initializable {
         //****Produkt muss in der Methode initialisiert werden!
         produkt.setName(nameEingabe.getText());
         produkt.setArt(artEingabe.getText());
-        produkt.setDatum(datumEingabe.getValue());
+        //produkt.setDatum(datumEingabe.getValue());
+        produkt.getDatum().setValue(datumEingabe.getValue());
         int anzahl2 = (int) anzahlEingabe.getValue();
-        produkt.anzahl.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 99, anzahl2));
+        produkt.getAnzahl().setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 99, anzahl2));
         vorratP.add(produkt);
 
         //****JSONObject produktJ = new JSONObject();
         String name = nameEingabe.getText();
         String art = artEingabe.getText();
         int anzahl = (int) anzahlEingabe.getValue();
-        LocalDate datum = produkt.getDatum();
+        LocalDate datum = datumEingabe.getValue();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String datum1 = datum.format(formatter);
         System.out.print(datum);
@@ -262,6 +295,7 @@ public class VorratslisteController implements Initializable {
 
         //Checkt ob schon eine JSON-Datei besteht. Wenn ja wird ein neues Produkt himzugefügt, wenn nicht wird ne neu Datei erzeugt und ein Produkt reingeschrieben.
         //Ist aber noch fehlerhaft!
+        //??????????????????????????????????????????????????????????????????????????????????????????
         File f = new File("Vorratsliste.json");
         if (f.exists()) {
 
@@ -294,8 +328,8 @@ public class VorratslisteController implements Initializable {
                 vorratP1.add(produkt);
                 String name = produkt.getName();
                 String art = produkt.getArt();
-                LocalDate datum = produkt.getDatum();
-                int anzahl = produkt.anzahl.getValue();
+                LocalDate datum = produkt.getDatum().getValue();
+                int anzahl = (int) produkt.getAnzahl().getValue();
                 produktJ.put("name", name);
                 produktJ.put("art", art);
                 produktJ.put("datum", datum);
@@ -312,8 +346,8 @@ public class VorratslisteController implements Initializable {
         for (Produkt produkt1: vorratP) {
             String name = produkt1.getName();
             String art = produkt1.getArt();
-            LocalDate datum = produkt1.getDatum();
-            int anzahl = produkt1.anzahl.getValue();
+            LocalDate datum = produkt1.getDatum().getValue();
+            int anzahl = (int) produkt1.getAnzahl().getValue();
             produktJ.put("name", name);
             produktJ.put("art", art);
             produktJ.put("datum", datum);
@@ -330,7 +364,53 @@ public class VorratslisteController implements Initializable {
         tabelle.setItems(vorratO1);
     }
 
+    /*public void onEditChanged(TableColumn.CellEditEvent<Produkt, String> produktStringCellEditEvent){
+        Produkt produkt = (Produkt) tabelle.getSelectionModel().getSelectedItem();
+        produkt.setName(produktStringCellEditEvent.getNewValue());
+    }*/
+
     //Methode wird ausgeführt wenn man den beenden-Button anklickt.
+
+    public void produktInEinkaufslisteEinfuegen(ActionEvent event) throws IOException {
+
+        for (Produkt produkt: vorratP){
+            if (produkt.getAuswahl().isSelected()){
+                String name = produkt.getName();
+                String art = produkt.getArt();
+                if (produkt.getDatum().getValue() != null) {
+                    LocalDate datum = produkt.getDatum().getValue();
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                    String datum1 = datum.format(formatter);
+                    produktJ.put("datum", datum1);
+                } else {
+                    produktJ.put("datum", null);
+                }
+                int anzahl = (int) produkt.getAnzahl().getValue();
+                produktJ.put("name", name);
+                produktJ.put("art", art);
+                produktJ.put("anzahl", anzahl);
+
+                File f = new File("Einkaufsliste.json");
+                if (f.exists()) {
+
+                    FileWriter fw = new FileWriter("Einkaufsliste.json", true);
+                    BufferedWriter bw = new BufferedWriter(fw);
+                    bw.write(produktJ.toJSONString());
+                    bw.newLine();
+                    bw.close();
+
+                } else {
+
+                    FileWriter fw = new FileWriter("Einkaufsliste.json", true);
+                    fw.write(produktJ.toJSONString());
+                    fw.close();
+
+                }
+            }
+
+        }
+    }
+
     public void beenden (ActionEvent event) throws IOException {
 
         PrintWriter writer = new PrintWriter("Vorratsliste.json");
@@ -345,13 +425,18 @@ public class VorratslisteController implements Initializable {
             System.out.println(produkt.getAnzahl().getValue());
             String name = produkt.getName();
             String art = produkt.getArt();
-            LocalDate datum = produkt.getDatum();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            String datum1 = datum.format(formatter);
+            System.out.println("");
+            if (produkt.getDatum().getValue() != null) {
+                LocalDate datum = produkt.getDatum().getValue();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                String datum1 = datum.format(formatter);
+                produktJ.put("datum", datum1);
+            } else {
+                produktJ.put("datum", null);
+            }
             int anzahl = (int) produkt.getAnzahl().getValue();
             produktJ.put("name", name);
             produktJ.put("art", art);
-            produktJ.put("datum", datum1);
             produktJ.put("anzahl", anzahl);
             bw.write(produktJ.toJSONString());
             bw.newLine();
@@ -359,6 +444,12 @@ public class VorratslisteController implements Initializable {
         }
         bw.close();
 
-        System.exit(0);
+        //System.exit(0);
+        Stage stage1 = new Stage();
+        Parent root = FXMLLoader.load(getClass().getResource("/sample/fxml/hauptmenu.fxml"));
+        stage1.setTitle("H.U.R.P");
+        stage1.setScene(new Scene(root));
+        stage1.show();
+        ((Node)(event.getSource())).getScene().getWindow().hide();
     }
 }
