@@ -225,7 +225,7 @@ public class EinkaufslisteController implements Initializable {
                 LocalDate datum2 = LocalDate.parse(datum1);
                 produktVorrat.getDatum().setValue(datum2);
             } else {
-                produktVorrat.getDatum().setValue(null);
+                produktVorrat.getDatum().setValue(LocalDate.of(3000, 1, 1));
             }
             int anzahl1 = (int) (long) produktJ.get("anzahl");
             produktVorrat.setName(name1);

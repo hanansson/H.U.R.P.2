@@ -103,7 +103,7 @@ public class VorratslisteController implements Initializable {
                 //Die Variablen werden einem Objekt der Klasse Produkt hinzugefügt und dieses wird in einer ArrayList gespeichert.
                 String name1 = (String) produktJ.get("name");
                 String art1 = (String) produktJ.get("art");
-                if(produktJ.get("datum") !=null) {
+                if(produktJ.get("datum") != null) {
                     String datum1 = (String) produktJ.get("datum");
                     LocalDate datum2 = LocalDate.parse(datum1);
                     produkt.getDatum().setValue(datum2);
