@@ -200,6 +200,7 @@ public class VorratslisteController implements Initializable {
             });
 
         //sortierenArt-Button wird im Kolumnentitel eingesetzt.
+        
         sortierenArt.setStyle("-fx-background-color: transparent");
         sortierenArt.setPrefSize(artColumn.getPrefWidth(), 2);
         artColumn.setGraphic(sortierenArt);
