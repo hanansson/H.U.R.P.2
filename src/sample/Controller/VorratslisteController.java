@@ -11,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.skin.TextFieldSkin;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.json.simple.JSONObject;
@@ -65,16 +66,28 @@ public class VorratslisteController implements Initializable {
         //tabelle.prefWidthProperty().isBound();
 
         //Hier durch ist rechts keine weitere unbenutzte Kolumne/Spalte
-        tabelle.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        nameEingabe.setPromptText("Produktname");
+        artEingabe.setPromptText("Produktart");
+        datumEingabe.setPromptText("Ablaufdatum");
+        /*if(nameEingabe.getText() != "Produktname"){
+            nameEingabe.setOpacity(100);
+        }*/
 
         anzahlEingabe.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 99));
 
-        //****Vielleicht müssen hier die TableColumns initialisiert werden.
+        nameColumn.setPrefWidth(80);
+        artColumn.setPrefWidth(80);
+        ablaufDatumColumn.setPrefWidth(220);
+        anzahlColumn.setPrefWidth(40);
+        auswahlColumn.setPrefWidth(20);
 
-        nameColumn.setPrefWidth(100);
-        artColumn.setPrefWidth(100);
-        ablaufDatumColumn.setPrefWidth(100);
-        anzahlColumn.setPrefWidth(100);
+        //nameColumn.setMaxWidth(100);
+        //artColumn.setMaxWidth(100);
+        //ablaufDatumColumn.setMaxWidth(130);
+        //anzahlColumn.setMaxWidth(80);
+        //auswahlColumn.setMaxWidth(60);
+
+        tabelle.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         //Gibt der Tabelle die Spalten/Kolumnen.
         tabelle.getColumns().addAll( nameColumn, artColumn, ablaufDatumColumn, anzahlColumn, auswahlColumn);

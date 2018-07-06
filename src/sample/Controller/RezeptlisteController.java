@@ -16,7 +16,6 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import sample.Produkt;
 import sample.Rezept;
 import java.util.Iterator;
 
@@ -31,75 +30,30 @@ public class RezeptlisteController implements Initializable {
     public Button loeschenButton;
     public Button zurueckButton;
     public TableView rezeptTabelle;
-    public TableColumn nameButtonColumn = new TableColumn("");
-    public TableColumn auswahlColumn = new TableColumn("");
+    public TableColumn nameButtonColumn = new TableColumn("Rezepte");
+    public TableColumn auswahlColumn = new TableColumn("alle");
     JSONObject rezeptInfo = new JSONObject();
     JSONObject produkt = new JSONObject();
     JSONObject produktJ = new JSONObject();
 
-
-    Stage stage1 = new Stage();
+    Stage stage = new Stage();
     ArrayList<Rezept> rezepteSammlung = new ArrayList<>();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        nameButtonColumn.setStyle( "-fx-alignment: CENTER;");
+        auswahlColumn.setStyle( "-fx-alignment: CENTER;");
+
+        nameButtonColumn.setSortable(false);
+        auswahlColumn.setSortable(false);
 
         rezeptTabelle.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         nameButtonColumn.setPrefWidth(50);
         auswahlColumn.setPrefWidth(5);
         rezeptTabelle.getColumns().addAll(nameButtonColumn, auswahlColumn);
 
-
-        BufferedReader br = null;
-        JSONParser parser = new JSONParser();
-        String s;
-
-        try {
-
-            br = new BufferedReader(new FileReader("Rezeptliste.json"));
-
-            while ((s = br.readLine()) != null) {
-
-                Rezept rezept = new Rezept();
-
-                try {
-                    rezeptInfo = (JSONObject) parser.parse(s);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-
-                String name = (String) rezeptInfo.get("name");
-                String text = (String) rezeptInfo.get("text");
-                rezept.getTextAnzeigen().setText(name);
-                rezept.getTextAnzeigen().setOnMouseClicked( event -> {
-
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/sample/fxml/rezepttext.fxml"));
-                    Parent root = null;
-                    try {
-                        root = (Parent) loader.load();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    RezepttextController rezepttextController = loader.getController();
-                    rezepttextController.setInfoText(text);
-                    Stage stage = new Stage();
-                    stage.setScene(new Scene(root, 450, 230));
-                    stage.show();
-                });
-                rezepteSammlung.add(rezept);
-            }
-
-        } catch(IOException e){
-            e.printStackTrace();
-        } finally{
-            try {
-                if (br != null) br.close();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        }
-
+        rezepteEinfuegen();
 
         nameButtonColumn.setCellValueFactory(new PropertyValueFactory<Rezept, String>("textAnzeigen"));
         auswahlColumn.setCellValueFactory(new PropertyValueFactory<Rezept, String>("auswahl"));
@@ -110,21 +64,74 @@ public class RezeptlisteController implements Initializable {
     }
 
     public void hinzufuegen (ActionEvent event) throws IOException {
+
         Parent root = FXMLLoader.load(getClass().getResource("/sample/fxml/rezeptformular.fxml"));
-        stage1.setScene(new Scene(root, 480, 350));
-        stage1.show();
+        stage.setScene(new Scene(root, 480, 350));
+        stage.show();
+        ((Node)(event.getSource())).getScene().getWindow().hide();
     }
 
-    public void loeschen (ActionEvent event){
+    public void loeschen (ActionEvent event) throws IOException {
+
+        Iterator<Rezept> i = rezepteSammlung.iterator();
+        boolean abbruch = true;
+
+        while (i.hasNext()) {
+            Rezept rezept = i.next();
+            if(rezept.getAuswahl().isSelected()) {
+                i.remove();
+                abbruch = false;
+            }
+        }
+
+        if(abbruch == true){
+            return;
+        }
+
+        JSONParser parser1 = new JSONParser();
+        String s1;
+        BufferedReader br1 = new BufferedReader(new FileReader("Rezeptliste.json"));
+        ArrayList<JSONObject> rezeptInfoSammlung = new ArrayList<>();
+
+            while ((s1 = br1.readLine()) != null) {
+
+                try {
+                    rezeptInfo = (JSONObject) parser1.parse(s1);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                rezeptInfoSammlung.add(rezeptInfo);
+            }
+
+        PrintWriter writer = new PrintWriter("Rezeptliste.json");
+        writer.print("");
+        writer.close();
+
+
+                for (Rezept rezept1 : rezepteSammlung) {
+                    for (JSONObject rezeptInfo1 : rezeptInfoSammlung) {
+                        if ((rezept1.getTextAnzeigen().getText()).equals(rezeptInfo1.get("name"))) {
+                            FileWriter fw = new FileWriter("Rezeptliste.json");
+                            BufferedWriter bw = new BufferedWriter(fw);
+                            bw.write(rezeptInfo.toJSONString());
+                            bw.newLine();
+                            bw.close();
+                        }
+                    }
+                }
+
+        final ObservableList<Rezept> vorratO1 = FXCollections.observableArrayList(rezepteSammlung);
+        rezeptTabelle.setItems(vorratO1);
 
     }
 
     public void zurueck (ActionEvent event) throws IOException {
 
         Parent root = FXMLLoader.load(getClass().getResource("/sample/fxml/hauptmenu.fxml"));
-        stage1.setTitle("H.U.R.P");
-        stage1.setScene(new Scene(root));
-        stage1.show();
+        stage.setTitle("H.U.R.P");
+        stage.setScene(new Scene(root));
+        stage.show();
         ((Node)(event.getSource())).getScene().getWindow().hide();
 
     }
@@ -150,7 +157,19 @@ public class RezeptlisteController implements Initializable {
 
             String name = (String) rezeptInfo.get("name");
             String text = (String) rezeptInfo.get("text");
+            //rezept.getTextAnzeigen().setText(name);
+            JSONArray alleZutaten = (JSONArray) rezeptInfo.get("zutaten");
+            String text1 = "";
+            String zutatText;
+
+            for (int i = 0; i < alleZutaten.size(); i ++){
+                JSONObject zutat = (JSONObject) alleZutaten.get(i);
+                zutatText = "\n" + zutat.get("anzahl") + "x " + zutat.get("name");
+                text1 = text1 + zutatText;
+            }
+
             rezept.getTextAnzeigen().setText(name);
+            String finalText = text + "\n" + text1;
             rezept.getTextAnzeigen().setOnMouseClicked( event1 -> {
 
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/sample/fxml/rezepttext.fxml"));
@@ -162,7 +181,7 @@ public class RezeptlisteController implements Initializable {
                 }
 
                 RezepttextController rezepttextController = loader.getController();
-                rezepttextController.setInfoText(text);
+                rezepttextController.setInfoText(finalText);
                 Stage stage = new Stage();
                 stage.setScene(new Scene(root, 450, 230));
                 stage.show();
@@ -198,13 +217,77 @@ public class RezeptlisteController implements Initializable {
 
             if(prüfen == zutaten.size()){
                 rezepteSammlung.add(rezept);
-                //System.out.println(test);
             }
         }
 
         final ObservableList<Rezept> vorratO1 = FXCollections.observableArrayList(rezepteSammlung);
         rezeptTabelle.setItems(vorratO1);
+    }
 
+    public void rezepteEinfuegen(){
+        BufferedReader br = null;
+        JSONParser parser = new JSONParser();
+        String s;
+
+        try {
+
+            br = new BufferedReader(new FileReader("Rezeptliste.json"));
+
+            while ((s = br.readLine()) != null) {
+
+                Rezept rezept = new Rezept();
+
+                try {
+                    rezeptInfo = (JSONObject) parser.parse(s);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                String name = (String) rezeptInfo.get("name");
+                String text = (String) rezeptInfo.get("text");
+                JSONArray alleZutaten = (JSONArray) rezeptInfo.get("zutaten");
+                String text1 = "";
+
+                String zutatText;
+
+                for (int i = 0; i < alleZutaten.size(); i ++){
+                    JSONObject zutat = (JSONObject) alleZutaten.get(i);
+                    zutatText = "\n" + zutat.get("anzahl") + "x " + zutat.get("name");
+                    text1 = text1 + zutatText;
+                }
+
+                rezept.getTextAnzeigen().setText(name );
+                rezept.getTextAnzeigen().setPrefWidth(2000);
+                //rezept.getTextAnzeigen().setStyle("-fx-background-color: transparent");
+                String finalText = text + "\n" + text1;
+                rezept.getTextAnzeigen().setOnMouseClicked(event -> {
+
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/sample/fxml/rezepttext.fxml"));
+                    Parent root = null;
+                    try {
+                        root = (Parent) loader.load();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    RezepttextController rezepttextController = loader.getController();
+                    rezepttextController.setInfoText(finalText);
+                    Stage stage = new Stage();
+                    stage.setScene(new Scene(root, 450, 230));
+                    stage.show();
+                });
+                rezepteSammlung.add(rezept);
+            }
+
+        } catch(IOException e){
+            e.printStackTrace();
+        } finally{
+            try {
+                if (br != null) br.close();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
     }
 
 }

@@ -1,22 +1,21 @@
 package sample.Controller;
 
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import sample.Rezept;
-import sample.Zutat;
-
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class RezeptformularController implements Initializable {
@@ -28,13 +27,19 @@ public class RezeptformularController implements Initializable {
     public TextField zutatEingabe;
     public TextArea textEingabe;
     public Spinner zutatAnzahlEingabe;
+    boolean eingabe;
     JSONObject rezept = new JSONObject();
     JSONArray zutaten = new JSONArray();
     int i = 0;
+    Stage stage = new Stage();
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        nameEingabe.setPromptText("Rezept");
+        zutatEingabe.setPromptText("Zutat");
+        textEingabe.setPromptText("Hier bitte das Rezept eingeben.");
 
         zutatAnzahlEingabe.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 99, 1));
     }
@@ -65,6 +70,12 @@ public class RezeptformularController implements Initializable {
 
         }
 
+        Parent root = FXMLLoader.load(getClass().getResource("/sample/fxml/rezeptliste.fxml"));
+        stage.setTitle("H.U.R.P");
+        stage.setScene(new Scene(root));
+        stage.show();
+        ((Node)(event.getSource())).getScene().getWindow().hide();
+
     }
 
     public void zutatHinzufuegen (ActionEvent event) {
@@ -81,8 +92,14 @@ public class RezeptformularController implements Initializable {
         i ++;*/
     }
 
-    public void abbrechen (ActionEvent event) {
+    public void abbrechen (ActionEvent event) throws IOException {
+
+        Parent root = FXMLLoader.load(getClass().getResource("/sample/fxml/rezeptliste.fxml"));
+        stage.setTitle("H.U.R.P");
+        stage.setScene(new Scene(root));
+        stage.show();
         ((Node)(event.getSource())).getScene().getWindow().hide();
+
     }
 
 }

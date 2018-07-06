@@ -7,16 +7,16 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="paneProduktliste" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller.VorratslisteController">
+<AnchorPane fx:id="paneProduktliste" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="823.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller.VorratslisteController">
    <children>
-      <TextField fx:id="nameEingabe" layoutX="61.0" layoutY="48.0" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="40.0" />
-      <TextField fx:id="artEingabe" layoutX="61.0" layoutY="112.0" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="90.0" />
-      <Button fx:id="hinzufuegen" layoutX="40.0" layoutY="243.0" mnemonicParsing="false" onAction="#produktHinzufuegen" prefHeight="27.0" prefWidth="112.0" text="Hinzufügen" AnchorPane.topAnchor="243.0" />
-      <Button fx:id="loeschen" layoutX="40.0" layoutY="289.0" mnemonicParsing="false" onAction="#loeschen" prefHeight="27.0" prefWidth="112.0" text="Löschen" AnchorPane.topAnchor="289.0" />
-      <Button fx:id="beenden" layoutX="40.0" layoutY="333.0" mnemonicParsing="false" onAction="#beenden" prefHeight="27.0" prefWidth="112.0" text="zurück" AnchorPane.topAnchor="333.0" />
-      <TableView fx:id="tabelle" layoutX="269.0" layoutY="30.0" prefHeight="348.0" prefWidth="308.0" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="40.0" />
-      <Spinner fx:id="anzahlEingabe" layoutX="40.0" layoutY="187.0" />
-      <DatePicker fx:id="datumEingabe" layoutX="40.0" layoutY="138.0" prefHeight="27.0" prefWidth="167.0" />
-      <Button fx:id="zuEinkauf" layoutX="180.0" layoutY="243.0" mnemonicParsing="false" onAction="#produktInEinkaufslisteEinfuegen" prefHeight="27.0" prefWidth="26.0" text="+" />
+      <TextField fx:id="nameEingabe" layoutX="61.0" layoutY="48.0" maxWidth="170.0" prefHeight="27.0" prefWidth="190.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="600.0" AnchorPane.topAnchor="40.0" />
+      <TextField fx:id="artEingabe" layoutX="61.0" layoutY="112.0" maxWidth="184.0" prefHeight="27.0" prefWidth="190.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="600.0" AnchorPane.topAnchor="90.0" />
+      <Button fx:id="hinzufuegen" layoutX="40.0" layoutY="240.0" mnemonicParsing="false" onAction="#produktHinzufuegen" prefHeight="27.0" prefWidth="90.0" text="zu Einkauf" AnchorPane.topAnchor="240.0" />
+      <Button fx:id="loeschen" layoutX="40.0" layoutY="289.0" mnemonicParsing="false" onAction="#loeschen" prefHeight="27.0" prefWidth="90.0" text="löschen" AnchorPane.topAnchor="290.0" />
+      <Button fx:id="beenden" layoutX="40.0" layoutY="333.0" mnemonicParsing="false" onAction="#beenden" prefHeight="27.0" prefWidth="90.0" text="zurück" AnchorPane.bottomAnchor="33.0" AnchorPane.topAnchor="340.0" />
+      <TableView fx:id="tabelle" layoutX="254.0" layoutY="31.0" prefHeight="327.0" prefWidth="470.0" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="260.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="40.0" />
+      <Spinner fx:id="anzahlEingabe" layoutX="163.0" layoutY="189.0" prefHeight="27.0" prefWidth="56.0" AnchorPane.leftAnchor="163.0" AnchorPane.rightAnchor="600.0" AnchorPane.topAnchor="189.0" />
+      <DatePicker fx:id="datumEingabe" layoutX="53.0" layoutY="140.0" maxWidth="183.0" prefHeight="27.0" prefWidth="183.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="600.0" AnchorPane.topAnchor="140.0" />
+      <Button fx:id="zuEinkauf" layoutX="55.0" layoutY="191.0" mnemonicParsing="false" onAction="#produktInEinkaufslisteEinfuegen" prefHeight="27.0" prefWidth="90.0" text="hinzufügen" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="693.0" AnchorPane.topAnchor="190.0" />
    </children>
 </AnchorPane>

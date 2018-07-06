@@ -20,7 +20,9 @@ public class RezepttextController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        infoText.setDisable(true);
+        infoText.setOpacity(100);
+        infoText.setWrapText(true);
     }
 
     public void setInfoText(String text){

@@ -5,12 +5,12 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="215.0" prefWidth="215.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller.EinkaufsformularController">
+<AnchorPane prefHeight="197.0" prefWidth="215.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller.EinkaufsformularController">
    <children>
-      <Button fx:id="bestaetigenButton" layoutX="24.0" layoutY="164.0" mnemonicParsing="false" onAction="#hinzufuegen" prefHeight="27.0" prefWidth="44.0" text="Ok" />
-      <Button fx:id="abbruchButton" layoutX="105.0" layoutY="164.0" mnemonicParsing="false" onAction="#abbruch" text="Abbrechen" />
+      <Button fx:id="bestaetigenButton" layoutX="24.0" layoutY="108.0" mnemonicParsing="false" onAction="#hinzufuegen" prefHeight="27.0" prefWidth="102.0" text="hinzufügen" />
+      <Button fx:id="abbruchButton" layoutX="26.0" layoutY="150.0" mnemonicParsing="false" onAction="#abbruch" prefHeight="27.0" prefWidth="102.0" text="abbrechen" />
       <TextField fx:id="nameEingabe" layoutX="24.0" layoutY="24.0" />
-      <TextField fx:id="artEingabe" layoutX="24.0" layoutY="65.0" />
-      <Spinner fx:id="anzahlEingabe" layoutX="24.0" layoutY="113.0" />
+      <TextField fx:id="artEingabe" layoutX="24.0" layoutY="65.0" prefHeight="27.0" prefWidth="102.0" />
+      <Spinner fx:id="anzahlEingabe" layoutX="136.0" layoutY="65.0" prefHeight="27.0" prefWidth="55.0" />
    </children>
 </AnchorPane>

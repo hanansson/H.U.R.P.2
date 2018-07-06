@@ -4,12 +4,12 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="364.0" prefWidth="414.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller.EinkaufslisteController">
+<AnchorPane prefHeight="364.0" prefWidth="548.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller.EinkaufslisteController">
    <children>
-      <TableView fx:id="tabelleEinkauf" layoutX="128.0" layoutY="20.0" prefHeight="324.0" prefWidth="259.0" />
-      <Button fx:id="hinzufuegenButton" layoutX="32.0" layoutY="148.0" mnemonicParsing="false" onAction="#hinzufuegen" prefHeight="27.0" prefWidth="71.0" text="+" />
-      <Button fx:id="loeschenButton" layoutX="31.0" layoutY="187.0" mnemonicParsing="false" onAction="#loeschen" prefHeight="27.0" prefWidth="71.0" text="-" />
-      <Button fx:id="add" layoutX="31.0" layoutY="111.0" mnemonicParsing="false" onAction="#vorratHinzufuegen" prefHeight="27.0" prefWidth="71.0" text="add" />
-      <Button fx:id="zurueckButton" layoutX="31.0" layoutY="226.0" mnemonicParsing="false" onAction="#zurueck" prefHeight="27.0" prefWidth="71.0" text="zurück" />
+      <TableView fx:id="tabelleEinkauf" layoutX="174.0" layoutY="20.0" prefHeight="324.0" prefWidth="344.0" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="40.0" />
+      <Button fx:id="hinzufuegenButton" layoutX="40.0" layoutY="88.0" mnemonicParsing="false" onAction="#hinzufuegen" prefHeight="27.0" prefWidth="93.0" text="hinzufügen" AnchorPane.topAnchor="90.0" />
+      <Button fx:id="loeschenButton" layoutX="40.0" layoutY="137.0" mnemonicParsing="false" onAction="#loeschen" prefHeight="27.0" prefWidth="93.0" text="löschen" AnchorPane.topAnchor="140.0" />
+      <Button fx:id="add" layoutX="32.0" layoutY="40.0" mnemonicParsing="false" onAction="#vorratHinzufuegen" prefHeight="27.0" prefWidth="93.0" text="eingekauft" AnchorPane.leftAnchor="40.0" />
+      <Button fx:id="zurueckButton" layoutX="40.0" layoutY="182.0" mnemonicParsing="false" onAction="#zurueck" prefHeight="27.0" prefWidth="93.0" text="zurück" AnchorPane.topAnchor="190.0" />
    </children>
 </AnchorPane>

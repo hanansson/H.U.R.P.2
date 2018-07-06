@@ -6,10 +6,10 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="424.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller.RezeptlisteController">
    <children>
-      <TableView fx:id="rezeptTabelle" layoutX="166.0" layoutY="30.0" prefHeight="341.0" prefWidth="225.0" />
-      <Button fx:id="rezeptButton" layoutX="33.0" layoutY="165.0" mnemonicParsing="false" onAction="#hinzufuegen" prefHeight="27.0" prefWidth="115.0" text="add Rezept" />
-      <Button fx:id="loeschenButton" layoutX="33.0" layoutY="208.0" mnemonicParsing="false" onAction="#loeschen" prefHeight="27.0" prefWidth="115.0" text="löschen" />
-      <Button fx:id="zurueckButton" layoutX="33.0" layoutY="254.0" mnemonicParsing="false" onAction="#zurueck" prefHeight="27.0" prefWidth="115.0" text="zurück" />
-      <Button fx:id="zutatenZurVerfügung" layoutX="33.0" layoutY="119.0" mnemonicParsing="false" onAction="#aussortieren" prefHeight="27.0" prefWidth="115.0" text="zur Verfügung" />
+      <TableView fx:id="rezeptTabelle" layoutX="166.0" layoutY="30.0" prefHeight="341.0" prefWidth="225.0" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="40.0" />
+      <Button fx:id="rezeptButton" layoutX="20.0" layoutY="86.0" mnemonicParsing="false" onAction="#hinzufuegen" prefHeight="27.0" prefWidth="134.0" text="hinzufügen" AnchorPane.topAnchor="90.0" />
+      <Button fx:id="loeschenButton" layoutX="20.0" layoutY="132.0" mnemonicParsing="false" onAction="#loeschen" prefHeight="27.0" prefWidth="134.0" text="löschen" AnchorPane.topAnchor="140.0" />
+      <Button fx:id="zurueckButton" layoutX="20.0" layoutY="173.0" mnemonicParsing="false" onAction="#zurueck" prefHeight="27.0" prefWidth="134.0" text="zurück" AnchorPane.topAnchor="190.0" />
+      <Button fx:id="zutatenZurVerfügung" layoutX="33.0" layoutY="30.0" mnemonicParsing="false" onAction="#aussortieren" prefHeight="27.0" prefWidth="115.0" text="auf Vorrat" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="270.0" AnchorPane.topAnchor="40.0" />
    </children>
 </AnchorPane>

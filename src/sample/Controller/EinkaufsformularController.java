@@ -3,12 +3,16 @@ package sample.Controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import org.json.simple.JSONObject;
 import sample.Produkt;
 
@@ -30,10 +34,14 @@ public class EinkaufsformularController implements Initializable {
     public Spinner anzahlEingabe;
     JSONObject produktJ = new JSONObject();
     Produkt produkt = new Produkt("Name", "Art", 0);
+    Stage stage = new Stage();
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        nameEingabe.setPromptText("Produktname");
+        artEingabe.setPromptText("Produktart");
 
         anzahlEingabe.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 99));
 
@@ -69,11 +77,21 @@ public class EinkaufsformularController implements Initializable {
 
         }
 
+        Parent root = FXMLLoader.load(getClass().getResource("/sample/fxml/einkaufsliste.fxml"));
+        stage.setTitle("H.U.R.P");
+        stage.setScene(new Scene(root));
+        stage.show();
+        ((Node)(event.getSource())).getScene().getWindow().hide();
 
     }
 
+    public void abbruch (ActionEvent event) throws IOException {
 
-    public void abbruch (ActionEvent event) {
+        Parent root = FXMLLoader.load(getClass().getResource("/sample/fxml/einkaufsliste.fxml"));
+        stage.setTitle("H.U.R.P");
+        stage.setScene(new Scene(root));
+        stage.show();
         ((Node)(event.getSource())).getScene().getWindow().hide();
     }
 }
+
