@@ -37,8 +37,8 @@ public class RezeptformularController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        nameEingabe.setPromptText("Rezept");
-        zutatEingabe.setPromptText("Zutat");
+        nameEingabe.setPromptText("Rezeptname");
+        zutatEingabe.setPromptText("Zutatname");
         textEingabe.setPromptText("Hier bitte das Rezept eingeben.");
 
         zutatAnzahlEingabe.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 99, 1));
@@ -46,50 +46,68 @@ public class RezeptformularController implements Initializable {
 
     public void rezeptHinzufuegen (ActionEvent event) throws IOException {
 
-        String name = nameEingabe.getText();
-        String text = textEingabe.getText();
+        if (nameEingabe.getText().isEmpty() || textEingabe.getText().isEmpty() || zutaten.size() == 0) {
+            nameEingabe.setPromptText("Rezeptname benötigt");
+            nameEingabe.setStyle("-fx-prompt-text-fill: red");
+            textEingabe.setPromptText("Rezepttext benötigt");
+            textEingabe.setStyle("-fx-prompt-text-fill: red");
+        }else{
 
-        rezept.put("name", name);
-        rezept.put("text", text);
-        rezept.put("zutaten", zutaten);
+            String name = nameEingabe.getText();
+            String text = textEingabe.getText();
 
-        File f = new File("Rezeptliste.json");
-        if (f.exists()) {
+            rezept.put("name", name);
+            rezept.put("text", text);
+            rezept.put("zutaten", zutaten);
 
-            FileWriter fw = new FileWriter("Rezeptliste.json", true);
-            BufferedWriter bw = new BufferedWriter(fw);
-            bw.write(rezept.toJSONString());
-            bw.newLine();
-            bw.close();
+            File f = new File("Rezeptliste.json");
+            if (f.exists()) {
 
-        } else {
+                FileWriter fw = new FileWriter("Rezeptliste.json", true);
+                BufferedWriter bw = new BufferedWriter(fw);
+                bw.write(rezept.toJSONString());
+                bw.newLine();
+                bw.close();
 
-            FileWriter fw = new FileWriter("Rezeptliste.json", true);
-            fw.write(rezept.toJSONString());
-            fw.close();
+            } else {
+
+                FileWriter fw = new FileWriter("Rezeptliste.json", true);
+                fw.write(rezept.toJSONString());
+                fw.close();
+
+            }
+
+            Parent root = FXMLLoader.load(getClass().getResource("/sample/fxml/rezeptliste.fxml"));
+            stage.setTitle("H.U.R.P");
+            stage.setScene(new Scene(root));
+            stage.show();
+            ((Node) (event.getSource())).getScene().getWindow().hide();
+
+            /*nameEingabe.setPromptText("Rezeptname");
+            textEingabe.setPromptText("Hier bitte das Rezept eingeben.");
+            nameEingabe.setStyle("-fx-prompt-text-fill: gray");
+            textEingabe.setStyle("-fx-prompt-text-fill: gray");*/
 
         }
-
-        Parent root = FXMLLoader.load(getClass().getResource("/sample/fxml/rezeptliste.fxml"));
-        stage.setTitle("H.U.R.P");
-        stage.setScene(new Scene(root));
-        stage.show();
-        ((Node)(event.getSource())).getScene().getWindow().hide();
-
     }
 
     public void zutatHinzufuegen (ActionEvent event) {
 
-        String name1 = zutatEingabe.getText();
-        int anzahl = (int) zutatAnzahlEingabe.getValue();
+        if(zutatEingabe.getText().isEmpty()){
+            zutatEingabe.setPromptText("Zutatname benötigt");
+            zutatEingabe.setStyle("-fx-prompt-text-fill: red");
+        }else {
+            String name1 = zutatEingabe.getText();
+            int anzahl = (int) zutatAnzahlEingabe.getValue();
 
-        JSONObject zutat = new JSONObject();
-        zutat.put("name", name1);
-        zutat.put("anzahl", anzahl);
-        zutaten.add(zutat);
-        /*rezept.put("zutat" + i, zutat);
-        rezept.put("zutatAnzahl", i);
-        i ++;*/
+            JSONObject zutat = new JSONObject();
+            zutat.put("name", name1);
+            zutat.put("anzahl", anzahl);
+            zutaten.add(zutat);
+
+            zutatEingabe.setPromptText("Zutatname");
+            zutatEingabe.setStyle("-fx-prompt-text-fill: gray");
+        }
     }
 
     public void abbrechen (ActionEvent event) throws IOException {

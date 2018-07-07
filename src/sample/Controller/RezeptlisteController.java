@@ -73,57 +73,72 @@ public class RezeptlisteController implements Initializable {
 
     public void loeschen (ActionEvent event) throws IOException {
 
-        Iterator<Rezept> i = rezepteSammlung.iterator();
-        boolean abbruch = true;
+        ArrayList<Rezept> rezepte = new ArrayList<>();
 
-        while (i.hasNext()) {
-            Rezept rezept = i.next();
-            if(rezept.getAuswahl().isSelected()) {
-                i.remove();
-                abbruch = false;
+            for(Rezept rezept : rezepteSammlung){
+                if(rezept.getAuswahl().isSelected()){
+                    rezepte.add(rezept);
+                }
             }
-        }
 
-        if(abbruch == true){
-            return;
-        }
+            rezepteSammlung.removeAll(rezepte);
 
-        JSONParser parser1 = new JSONParser();
-        String s1;
-        BufferedReader br1 = new BufferedReader(new FileReader("Rezeptliste.json"));
-        ArrayList<JSONObject> rezeptInfoSammlung = new ArrayList<>();
+        BufferedReader br = null;
+        JSONParser parser = new JSONParser();
+        ArrayList<JSONObject> rezeptAlleInfos = new ArrayList<>();
+        String s;
 
-            while ((s1 = br1.readLine()) != null) {
+            br = new BufferedReader(new FileReader("Rezeptliste.json"));
+
+            while ((s = br.readLine()) != null) {
+
+                Rezept rezept = new Rezept();
 
                 try {
-                    rezeptInfo = (JSONObject) parser1.parse(s1);
+                    rezeptInfo = (JSONObject) parser.parse(s);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
 
-                rezeptInfoSammlung.add(rezeptInfo);
+                rezeptAlleInfos.add(rezeptInfo);
             }
 
         PrintWriter writer = new PrintWriter("Rezeptliste.json");
         writer.print("");
         writer.close();
 
+        System.out.println(rezeptAlleInfos.size());
+        boolean selected = false;
 
-                for (Rezept rezept1 : rezepteSammlung) {
-                    for (JSONObject rezeptInfo1 : rezeptInfoSammlung) {
-                        if ((rezept1.getTextAnzeigen().getText()).equals(rezeptInfo1.get("name"))) {
-                            FileWriter fw = new FileWriter("Rezeptliste.json");
-                            BufferedWriter bw = new BufferedWriter(fw);
-                            bw.write(rezeptInfo.toJSONString());
-                            bw.newLine();
-                            bw.close();
-                        }
-                    }
+        ArrayList<JSONObject> rezeptnichtlöschen = new ArrayList<>();
+
+        for(JSONObject rezeptInfo2 : rezeptAlleInfos) {
+            for (Rezept rezept : rezepte) {
+                if (rezeptInfo2.get("name").equals(rezept.getTextAnzeigen().getText())) {
+                    selected = true;
                 }
+                if(selected == true){
+                    break;
+                }
+            }
+            if(selected == false) {
+                rezeptnichtlöschen.add(rezeptInfo2);
+            }
+            selected = false;
+        }
+
+        System.out.println(rezeptnichtlöschen.size());
+
+        for (JSONObject rezeptInfo3 : rezeptnichtlöschen) {
+            FileWriter fw = new FileWriter("Rezeptliste.json");
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write(rezeptInfo3.toJSONString());
+            bw.newLine();
+            bw.close();
+        }
 
         final ObservableList<Rezept> vorratO1 = FXCollections.observableArrayList(rezepteSammlung);
         rezeptTabelle.setItems(vorratO1);
-
     }
 
     public void zurueck (ActionEvent event) throws IOException {

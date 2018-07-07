@@ -148,7 +148,6 @@ public class VorratslisteController implements Initializable {
             anzahlColumn.setCellValueFactory(new PropertyValueFactory<Produkt, Integer>("Anzahl"));
             ablaufDatumColumn.setCellValueFactory(new PropertyValueFactory<Produkt, Date>("Datum"));
             auswahlColumn.setCellValueFactory(new PropertyValueFactory<Produkt, String>("Auswahl"));
-            //testColumn.setCellValueFactory(new PropertyValueFactory<Produkt, Integer>("Test"));
 
             //sortierenName-Button wird im Kolumnentitel eingesetzt. Dazu werden Grafikeinstellungen vorgenommen(unwichtig).
             //Der eigentlich Kolumnentitel, wird deaktiviert -> nameColumn.setSortable(false);
@@ -200,6 +199,11 @@ public class VorratslisteController implements Initializable {
             @Override
             public void handle(ActionEvent event) {
                 quicksort.datequicksort(vorratP);
+                for(Produkt produkt : vorratP) {
+                    if(produkt.getDatum().getValue().equals(LocalDate.of(3000, 1, 1))){
+                        produkt.getDatum().setValue(null);
+                    }
+                }
                 ArrayList <Produkt> vorrat02 = new ArrayList<>(vorratP);
                 final ObservableList<Produkt> vorratO1 = FXCollections.observableArrayList(vorrat02);
                 tabelle.setItems(vorratO1);
@@ -247,56 +251,71 @@ public class VorratslisteController implements Initializable {
 
     public void produktHinzufuegen (ActionEvent event) throws IOException {
 
-        System.out.println("ydasdsa");
         //neues Produkt-Objekt wird erstellt.
         Produkt produkt = new Produkt("Name", "Art",0,  LocalDate.of(1999,9,9));
-        //****Produkt muss in der Methode initialisiert werden!
+
+        //***********
+
         produkt.setName(nameEingabe.getText());
         produkt.setArt(artEingabe.getText());
         produkt.getDatum().setValue(datumEingabe.getValue());
         int anzahl2 = (int) anzahlEingabe.getValue();
         produkt.getAnzahl().setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 99, anzahl2));
-        System.out.println(vorratP.size());
-        vorratP.add(produkt);
-        System.out.println(vorratP.size());
 
-        //****JSONObject produktJ = new JSONObject();
-        String name = nameEingabe.getText();
-        String art = artEingabe.getText();
-        int anzahl = (int) anzahlEingabe.getValue();
-        LocalDate datum = datumEingabe.getValue();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String datum1 = datum.format(formatter);
-        //System.out.print(datum);
-        produktJ.put("name", name);
-        produktJ.put("art", art);
-        produktJ.put("datum", datum1);
-        produktJ.put("anzahl", anzahl);
+        if(nameEingabe.getText().isEmpty() || artEingabe.getText().isEmpty()){
+            nameEingabe.setPromptText("Produktname benötigt");
+            nameEingabe.setStyle("-fx-prompt-text-fill: red");
+            artEingabe.setPromptText("Produktart benötigt");
+            artEingabe.setStyle("-fx-prompt-text-fill: red");
+        }else {
+            vorratP.add(produkt);
+
+            //****JSONObject produktJ = new JSONObject();
+            String name = nameEingabe.getText();
+            String art = artEingabe.getText();
+            int anzahl = (int) anzahlEingabe.getValue();
+            if (produkt.getDatum().getValue() != null) {
+                LocalDate datum = produkt.getDatum().getValue();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                String datum1 = datum.format(formatter);
+                produktJ.put("datum", datum1);
+            } else {
+                produktJ.put("datum", null);
+            }
+
+            produktJ.put("name", name);
+            produktJ.put("art", art);
+            produktJ.put("anzahl", anzahl);
 
 
-        //Checkt ob schon eine JSON-Datei besteht. Wenn ja wird ein neues Produkt himzugefügt, wenn nicht wird ne neu Datei erzeugt und ein Produkt reingeschrieben.
-        //Ist aber noch fehlerhaft!
-        //??????????????????????????????????????????????????????????????????????????????????????????
-        File f = new File("Vorratsliste.json");
-        if (f.exists()) {
+            //Checkt ob schon eine JSON-Datei besteht. Wenn ja wird ein neues Produkt himzugefügt, wenn nicht wird ne neu Datei erzeugt und ein Produkt reingeschrieben.
+            //Ist aber noch fehlerhaft!
+            //??????????????????????????????????????????????????????????????????????????????????????????
+            File f = new File("Vorratsliste.json");
+            if (f.exists()) {
 
-            FileWriter fw = new FileWriter("Vorratsliste.json", true);
-            BufferedWriter bw = new BufferedWriter(fw);
-            bw.write(produktJ.toJSONString());
-            bw.newLine();
-            bw.close();
+                FileWriter fw = new FileWriter("Vorratsliste.json", true);
+                BufferedWriter bw = new BufferedWriter(fw);
+                bw.write(produktJ.toJSONString());
+                bw.newLine();
+                bw.close();
 
-        } else {
+            } else {
 
-            FileWriter fw = new FileWriter("Vorratsliste.json", true);
-            fw.write(produktJ.toJSONString());
-            fw.close();
+                FileWriter fw = new FileWriter("Vorratsliste.json", true);
+                fw.write(produktJ.toJSONString());
+                fw.close();
 
+            }
+
+            final ObservableList<Produkt> vorratO1 = FXCollections.observableArrayList(vorratP);
+            tabelle.setItems(vorratO1);
+
+            nameEingabe.setPromptText("Produktname");
+            artEingabe.setPromptText("Produktart");
+            nameEingabe.setStyle("-fx-prompt-text-fill: gray");
+            artEingabe.setStyle("-fx-prompt-text-fill: gray");
         }
-
-        final ObservableList<Produkt> vorratO1 = FXCollections.observableArrayList(vorratP);
-        tabelle.setItems(vorratO1);
-
     }
 
     //Methode wird ausgeführt wenn man den loeschen-Button anklickt.
@@ -306,14 +325,21 @@ public class VorratslisteController implements Initializable {
 
         for (Produkt produkt: vorratP){
             if (produkt.getAuswahl().isSelected()){
+                //?????????????
                 vorratP1.add(produkt);
                 String name = produkt.getName();
                 String art = produkt.getArt();
-                LocalDate datum = produkt.getDatum().getValue();
+                if (produkt.getDatum().getValue() != null) {
+                    LocalDate datum = produkt.getDatum().getValue();
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                    String datum1 = datum.format(formatter);
+                    produktJ.put("datum", datum1);
+                } else {
+                    produktJ.put("datum", null);
+                }
                 int anzahl = (int) produkt.getAnzahl().getValue();
                 produktJ.put("name", name);
                 produktJ.put("art", art);
-                produktJ.put("datum", datum);
                 produktJ.put("anzahl", anzahl);
             }
         }
@@ -327,11 +353,19 @@ public class VorratslisteController implements Initializable {
         for (Produkt produkt1: vorratP) {
             String name = produkt1.getName();
             String art = produkt1.getArt();
-            LocalDate datum = produkt1.getDatum().getValue();
+            if (produkt1.getDatum().getValue() != null) {
+                LocalDate datum = produkt1.getDatum().getValue();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                String datum1 = datum.format(formatter);
+                produktJ.put("datum", datum1);
+            } else {
+                produktJ.put("datum", null);
+            }
+            //LocalDate datum = produkt1.getDatum().getValue();
             int anzahl = (int) produkt1.getAnzahl().getValue();
             produktJ.put("name", name);
             produktJ.put("art", art);
-            produktJ.put("datum", datum);
+            //produktJ.put("datum", datum);
             produktJ.put("anzahl", anzahl);
 
             FileWriter fw = new FileWriter("Vorratsliste.json");
