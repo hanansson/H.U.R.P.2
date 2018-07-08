@@ -115,8 +115,9 @@ public class RezeptlisteController implements Initializable {
                     RezepttextController rezepttextController = loader.getController();
                     rezepttextController.setInfoText(finalText);
                     rezepttextController.rezeptNameLabel.setText(name);
-                    Stage stage = new Stage();
-                    stage.setScene(new Scene(root));
+                    Scene scene = new Scene(root);
+                    scene.getStylesheets().add("/sample/styling.css");
+                    stage.setScene(scene);
                     stage.show();
                 });
                 rezepteSammlung.add(rezept);
@@ -259,7 +260,9 @@ public class RezeptlisteController implements Initializable {
             }
 
             rezept.getTextAnzeigen().setText(name);
+            rezept.getTextAnzeigen().setPrefWidth(2000);
             String finalText = text + "\n" + text1;
+            //rezept.getTextAnzeigen().setStyle("-fx-background-color: transparent");
             rezept.getTextAnzeigen().setOnMouseClicked( event1 -> {
 
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/sample/fxml/rezepttext.fxml"));
@@ -274,7 +277,9 @@ public class RezeptlisteController implements Initializable {
                 rezepttextController.setInfoText(finalText);
                 rezepttextController.rezeptNameLabel.setText(name);
                 Stage stage = new Stage();
-                stage.setScene(new Scene(root));
+                Scene scene = new Scene(root);
+                scene.getStylesheets().add("/sample/styling.css");
+                stage.setScene(scene);
                 stage.show();
             });
 

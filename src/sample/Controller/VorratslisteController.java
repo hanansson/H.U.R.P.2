@@ -69,11 +69,11 @@ public class VorratslisteController implements Initializable {
 
         anzahlEingabe.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 99));
 
-        ablaufDatumColumn.setPrefWidth(330);
-        anzahlColumn.setMinWidth(60);
-        anzahlColumn.setMaxWidth(60);
-        auswahlColumn.setMinWidth(50);
-        auswahlColumn.setMaxWidth(50);
+        ablaufDatumColumn.setPrefWidth(300);
+        anzahlColumn.setMinWidth(80);
+        anzahlColumn.setMaxWidth(80);
+        auswahlColumn.setMinWidth(70);
+        auswahlColumn.setMaxWidth(70);
 
         tabelleVorrat.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
@@ -94,7 +94,6 @@ public class VorratslisteController implements Initializable {
         nameColumn.setSortable(false);
         nameColumn.setStyle( "-fx-alignment: CENTER;");
         sortierenName.setMaxSize(2000,2000);
-
 
         sortierenName.setOnAction(new EventHandler<ActionEvent>() {
             @Override
