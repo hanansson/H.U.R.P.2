@@ -1,20 +1,15 @@
 package sample;
 
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
 import java.time.LocalDate;
-import java.util.Date;
 
 public class Produkt {
 
     private SimpleStringProperty name;
     private SimpleStringProperty art;
-    //private LocalDate datum;
-    //private SimpleIntegerProperty anzahl;
     DatePicker datum;
     Spinner<Integer> anzahl;
     private CheckBox auswahl;
@@ -51,21 +46,6 @@ public class Produkt {
         this.art.set(art);
     }
 
-    /*public LocalDate getDatum() {
-        return datum;
-    }
-
-    public void setDatum(LocalDate date) {
-        this.datum = date;
-    }
-
-    public Integer getAnzahl(){
-        return anzahl.get();
-    }
-
-    public void setAnzahl(Integer anzahl){
-        this.anzahl.set(anzahl);
-    }*/
 
     public DatePicker getDatum() {return datum; }
 

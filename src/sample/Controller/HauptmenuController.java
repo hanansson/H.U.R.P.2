@@ -2,46 +2,55 @@ package sample.Controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
 public class HauptmenuController {
 
+    public AnchorPane hauptmenuPane;
     public Button geheZuVorrat;
     public Button geheZuRezepte;
-    public Button geheZuEinkaufszettel;
+    public Button geheZuEinkauf;
     public Button beenden;
-    Stage stage1 = new Stage();
+    Stage stage = new Stage();
 
-
-    public void oeffneVorrat(ActionEvent event) throws IOException {
+    public void oeffneVorratsliste(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/sample/fxml/vorratsliste.fxml"));
-        stage1.setTitle("H.U.R.P");
-        stage1.setScene(new Scene(root));
-        stage1.show();
-        ((Node) (event.getSource())).getScene().getWindow().hide();
+        stage.setTitle("H.U.R.P");
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add("/sample/styling.css");
+        stage.setScene(scene);
+        stage.show();
+        stage = (Stage) geheZuVorrat.getScene().getWindow();
+        stage.close();
     }
 
-    public void oeffneRezepte(ActionEvent event) throws IOException {
+    public void oeffneRezeptliste(ActionEvent event) throws IOException {
 
         Parent root = FXMLLoader.load(getClass().getResource("/sample/fxml/rezeptliste.fxml"));
-        stage1.setTitle("H.U.R.P");
-        stage1.setScene(new Scene(root));
-        stage1.show();
-        ((Node) (event.getSource())).getScene().getWindow().hide();
+        stage.setTitle("H.U.R.P");
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add("/sample/styling.css");
+        stage.setScene(scene);
+        stage.show();
+        stage = (Stage) geheZuRezepte.getScene().getWindow();
+        stage.close();
     }
 
-    public void oeffneEinkaufszettel (ActionEvent event)throws IOException {
+    public void oeffneEinkaufsliste (ActionEvent event)throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/sample/fxml/einkaufsliste.fxml"));
-        stage1.setTitle("H.U.R.P");
-        stage1.setScene(new Scene(root));
-        stage1.show();
-        ((Node)(event.getSource())).getScene().getWindow().hide();
+        stage.setTitle("H.U.R.P");
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add("/sample/styling.css");
+        stage.setScene(scene);
+        stage.show();
+        stage = (Stage) geheZuEinkauf.getScene().getWindow();
+        stage.close();
     }
 
     public void beenden (ActionEvent event){

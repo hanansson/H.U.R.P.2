@@ -4,7 +4,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -17,7 +16,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import sample.Rezept;
-import java.util.Iterator;
 
 import java.io.*;
 import java.net.URL;
@@ -28,12 +26,12 @@ public class RezeptlisteController implements Initializable {
 
     public Button rezeptButton;
     public Button loeschenButton;
-    public Button zurueckButton;
+    public Button zumHauptmenuButton;
     public TableView rezeptTabelle;
-    public TableColumn nameButtonColumn = new TableColumn("Rezepte");
-    public TableColumn auswahlColumn = new TableColumn("alle");
+
+    public TableColumn nameButtonColumn = new TableColumn("Rezepte einsehen");
+    public TableColumn auswahlColumn = new TableColumn("");
     JSONObject rezeptInfo = new JSONObject();
-    JSONObject produkt = new JSONObject();
     JSONObject produktJ = new JSONObject();
 
     Stage stage = new Stage();
@@ -43,32 +41,107 @@ public class RezeptlisteController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         nameButtonColumn.setStyle( "-fx-alignment: CENTER;");
+        nameButtonColumn.setSortable(false);
+
+        auswahlColumn.setMinWidth(50);
+        auswahlColumn.setMaxWidth(50);
+
+        //auswahlColumn.setGraphic(allesAuswählen);
+        auswahlColumn.setSortable(false);
         auswahlColumn.setStyle( "-fx-alignment: CENTER;");
 
-        nameButtonColumn.setSortable(false);
-        auswahlColumn.setSortable(false);
 
         rezeptTabelle.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         nameButtonColumn.setPrefWidth(50);
         auswahlColumn.setPrefWidth(5);
         rezeptTabelle.getColumns().addAll(nameButtonColumn, auswahlColumn);
 
-        rezepteEinfuegen();
-
         nameButtonColumn.setCellValueFactory(new PropertyValueFactory<Rezept, String>("textAnzeigen"));
         auswahlColumn.setCellValueFactory(new PropertyValueFactory<Rezept, String>("auswahl"));
 
-        final ObservableList<Rezept> vorratO1 = FXCollections.observableArrayList(rezepteSammlung);
-        rezeptTabelle.setItems(vorratO1);
+        rezeptlisteFuellen();
+
+        final ObservableList<Rezept> rezepteObservableList = FXCollections.observableArrayList(rezepteSammlung);
+        rezeptTabelle.setItems(rezepteObservableList);
 
     }
 
-    public void hinzufuegen (ActionEvent event) throws IOException {
+    public void rezeptlisteFuellen(){
+        BufferedReader br = null;
+        JSONParser parser = new JSONParser();
+        String s;
+
+        try {
+
+            br = new BufferedReader(new FileReader("Rezeptliste.json"));
+
+            while ((s = br.readLine()) != null) {
+
+                Rezept rezept = new Rezept();
+
+                try {
+                    rezeptInfo = (JSONObject) parser.parse(s);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                String name = (String) rezeptInfo.get("name");
+                String text = (String) rezeptInfo.get("text");
+                JSONArray alleZutaten = (JSONArray) rezeptInfo.get("zutaten");
+                String text1 = "";
+
+                String zutatText;
+
+                for (int i = 0; i < alleZutaten.size(); i ++){
+                    JSONObject zutat = (JSONObject) alleZutaten.get(i);
+                    zutatText = "\n" + zutat.get("anzahl") + "x " + zutat.get("name");
+                    text1 = text1 + zutatText;
+                }
+
+                rezept.getTextAnzeigen().setText(name );
+                rezept.getTextAnzeigen().setPrefWidth(2000);
+                //rezept.getTextAnzeigen().setStyle("-fx-background-color: transparent");
+                String finalText = text + "\n" + text1;
+                rezept.getTextAnzeigen().setOnMouseClicked(event -> {
+
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/sample/fxml/rezepttext.fxml"));
+                    Parent root = null;
+                    try {
+                        root = (Parent) loader.load();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    RezepttextController rezepttextController = loader.getController();
+                    rezepttextController.setInfoText(finalText);
+                    rezepttextController.rezeptNameLabel.setText(name);
+                    Stage stage = new Stage();
+                    stage.setScene(new Scene(root));
+                    stage.show();
+                });
+                rezepteSammlung.add(rezept);
+            }
+
+        } catch(IOException e){
+            e.printStackTrace();
+        } finally{
+            try {
+                if (br != null) br.close();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    public void rezeptHinzufuegen (ActionEvent event) throws IOException {
 
         Parent root = FXMLLoader.load(getClass().getResource("/sample/fxml/rezeptformular.fxml"));
-        stage.setScene(new Scene(root, 480, 350));
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add("/sample/styling.css");
+        stage.setScene(scene);
         stage.show();
-        ((Node)(event.getSource())).getScene().getWindow().hide();
+        stage = (Stage) zumHauptmenuButton.getScene().getWindow();
+        stage.close();
     }
 
     public void loeschen (ActionEvent event) throws IOException {
@@ -137,17 +210,20 @@ public class RezeptlisteController implements Initializable {
             bw.close();
         }
 
-        final ObservableList<Rezept> vorratO1 = FXCollections.observableArrayList(rezepteSammlung);
-        rezeptTabelle.setItems(vorratO1);
+        final ObservableList<Rezept> rezepteObservableList = FXCollections.observableArrayList(rezepteSammlung);
+        rezeptTabelle.setItems(rezepteObservableList);
     }
 
-    public void zurueck (ActionEvent event) throws IOException {
+    public void zumHauptmenu (ActionEvent event) throws IOException {
 
         Parent root = FXMLLoader.load(getClass().getResource("/sample/fxml/hauptmenu.fxml"));
         stage.setTitle("H.U.R.P");
-        stage.setScene(new Scene(root));
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add("/sample/styling.css");
+        stage.setScene(scene);
         stage.show();
-        ((Node)(event.getSource())).getScene().getWindow().hide();
+        stage = (Stage) zumHauptmenuButton.getScene().getWindow();
+        stage.close();
 
     }
 
@@ -172,7 +248,6 @@ public class RezeptlisteController implements Initializable {
 
             String name = (String) rezeptInfo.get("name");
             String text = (String) rezeptInfo.get("text");
-            //rezept.getTextAnzeigen().setText(name);
             JSONArray alleZutaten = (JSONArray) rezeptInfo.get("zutaten");
             String text1 = "";
             String zutatText;
@@ -197,8 +272,9 @@ public class RezeptlisteController implements Initializable {
 
                 RezepttextController rezepttextController = loader.getController();
                 rezepttextController.setInfoText(finalText);
+                rezepttextController.rezeptNameLabel.setText(name);
                 Stage stage = new Stage();
-                stage.setScene(new Scene(root, 450, 230));
+                stage.setScene(new Scene(root));
                 stage.show();
             });
 
@@ -235,74 +311,9 @@ public class RezeptlisteController implements Initializable {
             }
         }
 
-        final ObservableList<Rezept> vorratO1 = FXCollections.observableArrayList(rezepteSammlung);
-        rezeptTabelle.setItems(vorratO1);
+        final ObservableList<Rezept> rezepteObservableList = FXCollections.observableArrayList(rezepteSammlung);
+        rezeptTabelle.setItems(rezepteObservableList);
     }
 
-    public void rezepteEinfuegen(){
-        BufferedReader br = null;
-        JSONParser parser = new JSONParser();
-        String s;
-
-        try {
-
-            br = new BufferedReader(new FileReader("Rezeptliste.json"));
-
-            while ((s = br.readLine()) != null) {
-
-                Rezept rezept = new Rezept();
-
-                try {
-                    rezeptInfo = (JSONObject) parser.parse(s);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-
-                String name = (String) rezeptInfo.get("name");
-                String text = (String) rezeptInfo.get("text");
-                JSONArray alleZutaten = (JSONArray) rezeptInfo.get("zutaten");
-                String text1 = "";
-
-                String zutatText;
-
-                for (int i = 0; i < alleZutaten.size(); i ++){
-                    JSONObject zutat = (JSONObject) alleZutaten.get(i);
-                    zutatText = "\n" + zutat.get("anzahl") + "x " + zutat.get("name");
-                    text1 = text1 + zutatText;
-                }
-
-                rezept.getTextAnzeigen().setText(name );
-                rezept.getTextAnzeigen().setPrefWidth(2000);
-                //rezept.getTextAnzeigen().setStyle("-fx-background-color: transparent");
-                String finalText = text + "\n" + text1;
-                rezept.getTextAnzeigen().setOnMouseClicked(event -> {
-
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/sample/fxml/rezepttext.fxml"));
-                    Parent root = null;
-                    try {
-                        root = (Parent) loader.load();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    RezepttextController rezepttextController = loader.getController();
-                    rezepttextController.setInfoText(finalText);
-                    Stage stage = new Stage();
-                    stage.setScene(new Scene(root, 450, 230));
-                    stage.show();
-                });
-                rezepteSammlung.add(rezept);
-            }
-
-        } catch(IOException e){
-            e.printStackTrace();
-        } finally{
-            try {
-                if (br != null) br.close();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        }
-    }
 
 }

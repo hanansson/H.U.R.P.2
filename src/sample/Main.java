@@ -9,16 +9,16 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
-    //Lädt die fxml Datei und macht das Programmfenster in angegebener größe sichtbar
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("/sample/fxml/hauptmenu.fxml"));
         primaryStage.setTitle("H.U.R.P");
-        primaryStage.setScene(new Scene(root));
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add("/sample/styling.css");
+        primaryStage.setScene(scene);
         primaryStage.show();
     }
 
-//Nur fürs starten verantwortlich.
     public static void main(String[] args) {
         launch(args);
     }

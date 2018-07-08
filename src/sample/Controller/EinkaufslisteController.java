@@ -3,9 +3,9 @@ package sample.Controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -18,6 +18,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import sample.Produkt;
+import sample.Quicksort;
 
 import java.io.*;
 import java.net.URL;
@@ -28,47 +29,125 @@ import java.util.ResourceBundle;
 
 public class EinkaufslisteController implements Initializable {
 
+    public Button produkteVorratHinzufuegenButton;
     public Button hinzufuegenButton;
     public Button loeschenButton;
-    public TableView tabelleEinkauf;
-    public ArrayList<Produkt> vorratP = new ArrayList<>();
-    public ArrayList<Produkt> vorratP1 = new ArrayList<>();
+    public Button zumHauptmenuButton;
 
-    TableColumn nameColumn = new TableColumn("Name");
-    TableColumn artColumn = new TableColumn("Art");
-    TableColumn anzahlColumn = new TableColumn("Anzahl");
-    TableColumn auswahlColumn = new TableColumn("Alles");
+    public Button sortierenName = new Button("Name");
+    public Button sortierenArt = new Button("Art");
+    public Button sortierenAnzahl = new Button("Anzahl");
+    public Button allesAuswählen = new Button("Alles");
 
-    Stage stage1 = new Stage();
+    public TableView tabelleEinkaufsliste;
+
+    public TableColumn nameColumn = new TableColumn("");
+    public TableColumn artColumn = new TableColumn("");
+    public TableColumn anzahlColumn = new TableColumn("");
+    public TableColumn auswahlColumn = new TableColumn("");
+
+    public ArrayList<Produkt> produkteAufEinkaufsliste = new ArrayList<>();
+    public ArrayList<Produkt> produkteTemporärerListe = new ArrayList<>();
+
+    Stage stage = new Stage();
+
     JSONParser parser = new JSONParser();
     JSONObject produktJ = new JSONObject();
+
+    Quicksort quicksort = new Quicksort();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        tabelleEinkauf.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        anzahlColumn.setMinWidth(70);
+        anzahlColumn.setMaxWidth(70);
+        auswahlColumn.setMinWidth(60);
+        auswahlColumn.setMaxWidth(60);
 
-        //anzahlEingabe.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 99));
-
-
-        nameColumn.setStyle( "-fx-alignment: CENTER;");
-        artColumn.setStyle( "-fx-alignment: CENTER;");
-        anzahlColumn.setStyle( "-fx-alignment: CENTER;");
-        auswahlColumn.setStyle( "-fx-alignment: CENTER;");
-
-        nameColumn.setPrefWidth(100);
-        artColumn.setPrefWidth(100);
-        anzahlColumn.setPrefWidth(100);
-        auswahlColumn.setPrefWidth(100);
+        tabelleEinkaufsliste.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         nameColumn.setCellValueFactory(new PropertyValueFactory<Produkt, String>("Name"));
         artColumn.setCellValueFactory(new PropertyValueFactory<Produkt, String>("Art"));
         anzahlColumn.setCellValueFactory(new PropertyValueFactory<Produkt, Integer>("Anzahl"));
         auswahlColumn.setCellValueFactory(new PropertyValueFactory<Produkt, String>("Auswahl"));
 
-        tabelleEinkauf.getColumns().addAll(nameColumn, artColumn, anzahlColumn, auswahlColumn);
+        tabelleEinkaufsliste.getColumns().addAll(nameColumn, artColumn, anzahlColumn, auswahlColumn);
 
-        //einkaeufeEinfuegen();
+        sortierenName.setStyle("-fx-background-color: transparent");
+        sortierenName.setPrefSize(nameColumn.getPrefWidth(), 2);
+        nameColumn.setGraphic(sortierenName);
+        nameColumn.setSortable(false);
+        nameColumn.setStyle( "-fx-alignment: CENTER;");
+        sortierenName.setMaxSize(2000,2000);
+
+        sortierenName.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                quicksort.namequicksort(produkteAufEinkaufsliste);
+                final ObservableList<Produkt> produkteObservableList = FXCollections.observableArrayList(produkteAufEinkaufsliste);
+                tabelleEinkaufsliste.setItems(produkteObservableList);
+            }
+        });
+
+        sortierenArt.setStyle("-fx-background-color: transparent");
+        sortierenArt.setPrefSize(artColumn.getPrefWidth(), 2);
+        artColumn.setGraphic(sortierenArt);
+        artColumn.setSortable(false);
+        artColumn.setStyle( "-fx-alignment: CENTER;");
+        sortierenArt.setMaxSize(2000,2000);
+
+        sortierenArt.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                quicksort.artquicksort(produkteAufEinkaufsliste);
+                final ObservableList<Produkt> produktObservableList = FXCollections.observableArrayList(produkteAufEinkaufsliste);
+                tabelleEinkaufsliste.setItems(produktObservableList);
+            }
+        });
+
+        sortierenAnzahl.setStyle("-fx-background-color: transparent");
+        sortierenAnzahl.setPrefSize(anzahlColumn.getPrefWidth(), 2);
+        anzahlColumn.setGraphic(sortierenAnzahl);
+        anzahlColumn.setSortable(false);
+        anzahlColumn.setStyle( "-fx-alignment: CENTER;");
+        sortierenAnzahl.setMaxSize(2000,2000);
+
+        sortierenAnzahl.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                quicksort.anzahlquicksort(produkteAufEinkaufsliste);
+                final ObservableList<Produkt> produkteObservableList = FXCollections.observableArrayList(produkteAufEinkaufsliste);
+                tabelleEinkaufsliste.setItems(produkteObservableList);
+            }
+        });
+
+        allesAuswählen.setStyle("-fx-background-color: transparent");
+        allesAuswählen.setPrefSize(auswahlColumn.getPrefWidth(), 2);
+        auswahlColumn.setGraphic(allesAuswählen);
+        auswahlColumn.setSortable(false);
+        auswahlColumn.setStyle( "-fx-alignment: CENTER;");
+        allesAuswählen.setMaxSize(2000,2000);
+
+        allesAuswählen.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                for(Produkt produkt: produkteAufEinkaufsliste) {
+                    if (produkt.getAuswahl().isSelected()){
+                    }else{
+                        produkt.getAuswahl().setSelected(true);
+                    }
+                }
+            }
+        });
+
+        einkaufslisteFuellen();
+
+        final ObservableList<Produkt> produkteObservableList = FXCollections.observableArrayList(produkteAufEinkaufsliste);
+        tabelleEinkaufsliste.setItems(produkteObservableList);
+
+    }
+
+    public void einkaufslisteFuellen() {
 
         BufferedReader br1 = null;
 
@@ -92,9 +171,9 @@ public class EinkaufslisteController implements Initializable {
                 int anzahl1 = (int) (long) produktJ.get("anzahl");
                 produkt.setName(name1);
                 produkt.setArt(art1);
-                produkt.setDatum(null);
-                produkt.getAnzahl().setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 99, anzahl1));
-                vorratP.add(produkt);
+                produkt.getDatum().setValue(null);
+                produkt.getAnzahl().setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 99, anzahl1));
+                produkteAufEinkaufsliste.add(produkt);
             }
 
         } catch (IOException e) {
@@ -106,39 +185,37 @@ public class EinkaufslisteController implements Initializable {
                 ex.printStackTrace();
             }
         }
-
-        final ObservableList<Produkt> vorratO1 = FXCollections.observableArrayList(vorratP);
-        tabelleEinkauf.setItems(vorratO1);
-
     }
 
-    public void hinzufuegen(ActionEvent event) throws IOException {
+    public void produktHinzufuegen (ActionEvent event) throws IOException {
 
         Parent root = FXMLLoader.load(getClass().getResource("/sample/fxml/einkaufsformular.fxml"));
-        stage1.setScene(new Scene(root, 215, 215));
-        stage1.show();
-        ((Node)(event.getSource())).getScene().getWindow().hide();
-
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add("/sample/styling.css");
+        stage.setScene(scene);
+        stage.show();
+        stage = (Stage) zumHauptmenuButton.getScene().getWindow();
+        stage.close();
 
     }
 
-    public void loeschen(ActionEvent event) throws IOException {
+    public void loeschen (ActionEvent event) throws IOException {
 
-        ArrayList<Produkt> vorratP1 = new ArrayList<>();
+        produkteTemporärerListe.clear();
 
-        for (Produkt produkt: vorratP){
+        for (Produkt produkt: produkteAufEinkaufsliste){
             if (produkt.getAuswahl().isSelected()){
-                vorratP1.add(produkt);
+                produkteTemporärerListe.add(produkt);
                 }
             }
 
-        vorratP.removeAll(vorratP1);
+        produkteAufEinkaufsliste.removeAll(produkteTemporärerListe);
 
         PrintWriter writer = new PrintWriter("Einkaufsliste.json");
         writer.print("");
         writer.close();
 
-        for (Produkt produkt1: vorratP) {
+        for (Produkt produkt1: produkteAufEinkaufsliste) {
             String name = produkt1.getName();
             String art = produkt1.getArt();
             int anzahl = (int) produkt1.getAnzahl().getValue();
@@ -154,61 +231,16 @@ public class EinkaufslisteController implements Initializable {
             bw.close();
         }
 
-        final ObservableList<Produkt> vorratO1 = FXCollections.observableArrayList(vorratP);
-        tabelleEinkauf.setItems(vorratO1);
+        final ObservableList<Produkt> produkteObservableList = FXCollections.observableArrayList(produkteAufEinkaufsliste);
+        tabelleEinkaufsliste.setItems(produkteObservableList);
     }
 
-
-    //keine Funktion
-    public void einkaeufeEinfuegen() {
-        /*BufferedReader br1 = null;
-
-        try {
-
-            String s1;
-            br1 = new BufferedReader(new FileReader("Einkaufsliste.json"));
-
-            while ((s1 = br1.readLine()) != null) {
-
-                Produkt produkt = new Produkt("", "", 0, LocalDate.of(1999, 9, 9));
-
-                try {
-                    produktJ = (JSONObject) parser.parse(s1);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-
-                String name1 = (String) produktJ.get("name");
-                String art1 = (String) produktJ.get("art");
-                int anzahl1 = (int) (long) produktJ.get("anzahl");
-                produkt.setName(name1);
-                produkt.setArt(art1);
-                produkt.setDatum(null);
-                produkt.getAnzahl().setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 99, anzahl1));
-                vorratP.add(produkt);
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (br1 != null) br1.close();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        }
-
-        final ObservableList<Produkt> vorratO1 = FXCollections.observableArrayList(vorratP);
-        tabelleEinkauf.setItems(vorratO1);
-*/
-    }
-
-    public void vorratHinzufuegen(ActionEvent event) throws IOException {
+    public void produkteVorratHinzufuegen (ActionEvent event) throws IOException {
 
         boolean ausgewaehlt = false;
 
-        for (Produkt produktEinkauf : vorratP) {
-            if (produktEinkauf.getAuswahl().isSelected()) {
+        for (Produkt produktAufEinkaufsListe : produkteAufEinkaufsliste) {
+            if (produktAufEinkaufsListe.getAuswahl().isSelected()) {
                 ausgewaehlt = true;
                 break;
             }
@@ -221,7 +253,7 @@ public class EinkaufslisteController implements Initializable {
 
             while ((s = br.readLine()) != null) {
 
-                Produkt produktVorrat = new Produkt("", "", 0, LocalDate.of(1999, 9, 9));
+                Produkt produktAusVorrat = new Produkt("", "", 0, LocalDate.of(1999, 9, 9));
 
                 try {
                     produktJ = (JSONObject) parser.parse(s);
@@ -234,32 +266,33 @@ public class EinkaufslisteController implements Initializable {
                 if (produktJ.get("datum") != null) {
                     String datum1 = (String) produktJ.get("datum");
                     LocalDate datum2 = LocalDate.parse(datum1);
-                    produktVorrat.getDatum().setValue(datum2);
+                    produktAusVorrat.getDatum().setValue(datum2);
+                    System.out.println(produktJ.get("datum"));
                 } else {
-                    produktVorrat.getDatum().setValue(LocalDate.of(3000, 1, 1));
+                    produktAusVorrat.getDatum().setValue(null);
                 }
                 int anzahl1 = (int) (long) produktJ.get("anzahl");
-                produktVorrat.setName(name1);
-                produktVorrat.setArt(art1);
-                produktVorrat.getAnzahl().setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 99, anzahl1));
+                produktAusVorrat.setName(name1);
+                produktAusVorrat.setArt(art1);
+                produktAusVorrat.getAnzahl().setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 99, anzahl1));
 
-                vorratP1.add(produktVorrat);
+                produkteTemporärerListe.add(produktAusVorrat);
 
-                for (Produkt produktEinkauf : vorratP) {
-                    if (produktEinkauf.getAuswahl().isSelected()) {
+                for (Produkt produktAufEinkaufsliste : produkteAufEinkaufsliste) {
+                    if (produktAufEinkaufsliste.getAuswahl().isSelected()) {
                         //&&
-                        if ((produktEinkauf.getName()).equals(produktVorrat.getName())) {
-                            vorratP1.remove(produktVorrat);
+                        if ((produktAufEinkaufsliste.getName()).equals(produktAusVorrat.getName())) {
+                            produkteTemporärerListe.remove(produktAusVorrat);
 
-                            int anzahl = (int) produktVorrat.getAnzahl().getValue();
-                            int eingekauft = (int) produktEinkauf.getAnzahl().getValue();
+                            int anzahl = (int) produktAusVorrat.getAnzahl().getValue();
+                            int eingekauft = (int) produktAufEinkaufsliste.getAnzahl().getValue();
                             int gesamtanzahl = anzahl + eingekauft;
                             System.out.println(gesamtanzahl);
-                            produktVorrat.getAnzahl().setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 99, gesamtanzahl));
-                            System.out.println(produktVorrat.getAnzahl().getValue());
+                            produktAusVorrat.getAnzahl().setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 99, gesamtanzahl));
+                            System.out.println(produktAusVorrat.getAnzahl().getValue());
 
-                            vorratP1.add(produktVorrat);
-                            produktEinkauf.getAuswahl().setSelected(false);
+                            produkteTemporärerListe.add(produktAusVorrat);
+                            produktAufEinkaufsliste.getAuswahl().setSelected(false);
                         }
 
                     }
@@ -269,37 +302,35 @@ public class EinkaufslisteController implements Initializable {
             FileWriter fw = new FileWriter("Vorratsliste.json");
             BufferedWriter bw = new BufferedWriter(fw);
 
-            //System.out.println(vorratP1.get(0).getName() + vorratP1.get(1).getName());
 
-            for (Produkt produkt1 : vorratP) {
-                if (produkt1.getAuswahl().isSelected()) {
-                    vorratP1.add(produkt1);
-                    produkt1.getAuswahl().setSelected(false);
+            for (Produkt produktEingekauft : produkteAufEinkaufsliste) {
+                if (produktEingekauft.getAuswahl().isSelected()) {
+                    produkteTemporärerListe.add(produktEingekauft);
+                    produktEingekauft.getAuswahl().setSelected(false);
                 }
             }
 
-            for (Produkt produkt1 : vorratP1) {
+            for (Produkt produktNeuerVorrat : produkteTemporärerListe) {
 
-                Produkt produktVorrat = new Produkt("", "", 0, LocalDate.of(1999, 9, 9));
-
-                String name = produkt1.getName();
-                String art = produkt1.getArt();
-                //macht keinen sinn.
-                if (produktVorrat.getDatum().getValue() != null) {
-                    LocalDate datum = produkt1.getDatum().getValue();
+                String name = produktNeuerVorrat.getName();
+                String art = produktNeuerVorrat.getArt();
+                if (produktNeuerVorrat.getDatum().getValue() != null) {
+                    LocalDate datum = produktNeuerVorrat.getDatum().getValue();
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                     String datum1 = datum.format(formatter);
                     produktJ.put("datum", datum1);
                 } else {
                     produktJ.put("datum", null);
+                    System.out.println("test");
                 }
 
-                int anzahl = (int) produkt1.getAnzahl().getValue();
+                int anzahl = (int) produktNeuerVorrat.getAnzahl().getValue();
                 produktJ.put("name", name);
                 produktJ.put("art", art);
                 produktJ.put("anzahl", anzahl);
 
                 System.out.println(produktJ.get("name"));
+                System.out.println(produktJ.get("datum"));
 
                 bw.write(produktJ.toJSONString());
                 bw.newLine();
@@ -307,21 +338,23 @@ public class EinkaufslisteController implements Initializable {
 
             bw.close();
 
-            //vorratP1.clear();
-            vorratP.clear();
+            produkteAufEinkaufsliste.clear();
 
         } else {
             System.out.println("Es ist kein Produkt ausgewählt!");
         }
     }
 
-    public void zurueck (ActionEvent event) throws IOException {
+    public void zumHauptmenu (ActionEvent event) throws IOException {
 
         Parent root = FXMLLoader.load(getClass().getResource("/sample/fxml/hauptmenu.fxml"));
-        stage1.setTitle("H.U.R.P");
-        stage1.setScene(new Scene(root));
-        stage1.show();
-        ((Node)(event.getSource())).getScene().getWindow().hide();
+        stage.setTitle("H.U.R.P");
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add("/sample/styling.css");
+        stage.setScene(scene);
+        stage.show();
+        stage = (Stage) zumHauptmenuButton.getScene().getWindow();
+        stage.close();
 
     }
 }

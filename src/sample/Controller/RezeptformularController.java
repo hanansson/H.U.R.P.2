@@ -21,18 +21,17 @@ import java.util.ResourceBundle;
 public class RezeptformularController implements Initializable {
 
     public Button zutatHinzufuegenButton;
-    public Button abbrechenButton;
-    public Button rezeptButton;
+    public Button abbruchButton;
+    public Button rezeptHinzufuegenButton;
     public TextField nameEingabe;
     public TextField zutatEingabe;
     public TextArea textEingabe;
     public Spinner zutatAnzahlEingabe;
-    boolean eingabe;
-    JSONObject rezept = new JSONObject();
-    JSONArray zutaten = new JSONArray();
-    int i = 0;
+
     Stage stage = new Stage();
 
+    JSONObject rezept = new JSONObject();
+    JSONArray zutaten = new JSONArray();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -40,6 +39,10 @@ public class RezeptformularController implements Initializable {
         nameEingabe.setPromptText("Rezeptname");
         zutatEingabe.setPromptText("Zutatname");
         textEingabe.setPromptText("Hier bitte das Rezept eingeben.");
+
+        nameEingabe.setStyle("-fx-prompt-text-fill: gray");
+        zutatEingabe.setStyle("-fx-prompt-text-fill: gray");
+        textEingabe.setStyle("-fx-prompt-text-fill: gray");
 
         zutatAnzahlEingabe.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 99, 1));
     }
@@ -79,14 +82,12 @@ public class RezeptformularController implements Initializable {
 
             Parent root = FXMLLoader.load(getClass().getResource("/sample/fxml/rezeptliste.fxml"));
             stage.setTitle("H.U.R.P");
-            stage.setScene(new Scene(root));
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add("/sample/styling.css");
+            stage.setScene(scene);
             stage.show();
-            ((Node) (event.getSource())).getScene().getWindow().hide();
-
-            /*nameEingabe.setPromptText("Rezeptname");
-            textEingabe.setPromptText("Hier bitte das Rezept eingeben.");
-            nameEingabe.setStyle("-fx-prompt-text-fill: gray");
-            textEingabe.setStyle("-fx-prompt-text-fill: gray");*/
+            stage = (Stage) rezeptHinzufuegenButton.getScene().getWindow();
+            stage.close();
 
         }
     }
@@ -114,9 +115,12 @@ public class RezeptformularController implements Initializable {
 
         Parent root = FXMLLoader.load(getClass().getResource("/sample/fxml/rezeptliste.fxml"));
         stage.setTitle("H.U.R.P");
-        stage.setScene(new Scene(root));
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add("/sample/styling.css");
+        stage.setScene(scene);
         stage.show();
-        ((Node)(event.getSource())).getScene().getWindow().hide();
+        stage = (Stage) abbruchButton.getScene().getWindow();
+        stage.close();
 
     }
 
