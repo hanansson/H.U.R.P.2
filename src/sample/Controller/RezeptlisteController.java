@@ -195,7 +195,6 @@ public class RezeptlisteController implements Initializable {
             }
         }
 
-        //System.out.println(rezeptnichtlöschen.size());
 
         FileWriter fw = new FileWriter("Rezeptliste.json");
         BufferedWriter bw = new BufferedWriter(fw);

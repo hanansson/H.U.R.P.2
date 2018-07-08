@@ -267,7 +267,7 @@ public class EinkaufslisteController implements Initializable {
                     String datum1 = (String) produktJ.get("datum");
                     LocalDate datum2 = LocalDate.parse(datum1);
                     produktAusVorrat.getDatum().setValue(datum2);
-                    System.out.println(produktJ.get("datum"));
+                    //System.out.println(produktJ.get("datum"));
                 } else {
                     produktAusVorrat.getDatum().setValue(null);
                 }
@@ -287,9 +287,9 @@ public class EinkaufslisteController implements Initializable {
                             int anzahl = (int) produktAusVorrat.getAnzahl().getValue();
                             int eingekauft = (int) produktAufEinkaufsliste.getAnzahl().getValue();
                             int gesamtanzahl = anzahl + eingekauft;
-                            System.out.println(gesamtanzahl);
+                            //System.out.println(gesamtanzahl);
                             produktAusVorrat.getAnzahl().setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 99, gesamtanzahl));
-                            System.out.println(produktAusVorrat.getAnzahl().getValue());
+                            //System.out.println(produktAusVorrat.getAnzahl().getValue());
 
                             produkteTemporärerListe.add(produktAusVorrat);
                             produktAufEinkaufsliste.getAuswahl().setSelected(false);
@@ -301,7 +301,6 @@ public class EinkaufslisteController implements Initializable {
 
             FileWriter fw = new FileWriter("Vorratsliste.json");
             BufferedWriter bw = new BufferedWriter(fw);
-
 
             for (Produkt produktEingekauft : produkteAufEinkaufsliste) {
                 if (produktEingekauft.getAuswahl().isSelected()) {
@@ -329,8 +328,8 @@ public class EinkaufslisteController implements Initializable {
                 produktJ.put("art", art);
                 produktJ.put("anzahl", anzahl);
 
-                System.out.println(produktJ.get("name"));
-                System.out.println(produktJ.get("datum"));
+                //System.out.println(produktJ.get("name"));
+                //System.out.println(produktJ.get("datum"));
 
                 bw.write(produktJ.toJSONString());
                 bw.newLine();
@@ -338,7 +337,9 @@ public class EinkaufslisteController implements Initializable {
 
             bw.close();
 
-            produkteAufEinkaufsliste.clear();
+            produkteTemporärerListe.clear();
+
+            System.out.println(produkteAufEinkaufsliste.size());
 
         } else {
             System.out.println("Es ist kein Produkt ausgewählt!");
@@ -346,6 +347,33 @@ public class EinkaufslisteController implements Initializable {
     }
 
     public void zumHauptmenu (ActionEvent event) throws IOException {
+
+        PrintWriter writer = new PrintWriter("Einkaufsliste.json");
+        writer.print("");
+        writer.close();
+        FileWriter fw = new FileWriter("Einkaufsliste.json");
+        BufferedWriter bw = new BufferedWriter(fw);
+
+        for (Produkt produkt: produkteAufEinkaufsliste){
+            String name = produkt.getName();
+            String art = produkt.getArt();
+            if (produkt.getDatum().getValue() != null) {
+                LocalDate datum = produkt.getDatum().getValue();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                String datum1 = datum.format(formatter);
+                produktJ.put("datum", datum1);
+            } else {
+                produktJ.put("datum", null);
+            }
+            int anzahl = (int) produkt.getAnzahl().getValue();
+            produktJ.put("name", name);
+            produktJ.put("art", art);
+            produktJ.put("anzahl", anzahl);
+            bw.write(produktJ.toJSONString());
+            bw.newLine();
+        }
+
+        bw.close();
 
         Parent root = FXMLLoader.load(getClass().getResource("/sample/fxml/hauptmenu.fxml"));
         stage.setTitle("H.U.R.P");

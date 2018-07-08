@@ -2,18 +2,18 @@
     -fx-background-image: url("bild.jpg");
     -fx-background-size: 1280 614;
     -fx-background-position: center center;
-    -fx-background-color: rgba(83, 80, 82, 0.74);
+    /*-fx-background-color: rgba(83, 80, 82, 0.74);
     -fx-body-color: rgba(83, 80, 82, 0.74);
     -fx-border-color: rgba(83, 80, 82, 0.74);
     -fx-background-opacity: 30;
     -fx-body-opacity: 30;
-    -fx-border-opacity: 30;
+    -fx-border-opacity: 30;*/
     -fx-text-fill: #ffffff;
     -fx-font-size: 12px;
 
 }
 
-.tab-pane{
+/*.tab-pane{
     -fx-background-color: rgba(83, 80, 82, 0.74);
     -fx-body-color: rgba(83, 80, 82, 0.74);
 }
@@ -22,7 +22,7 @@
     -fx-background-color: rgba(83, 80, 82, 0.74);
     -fx-background-opacity: 30;
     -fx-text-fill: #ffffff;
-}
+}*/
 
 .button {
     -fx-background-color: rgba(83, 80, 82, 0.74);
@@ -144,8 +144,6 @@
     -fx-text-fill: #ffffff;
     -fx-font-size: 12px;
 }
-
-
 
 .spinner {
     -fx-background-color: rgba(83, 80, 82, 0.74);

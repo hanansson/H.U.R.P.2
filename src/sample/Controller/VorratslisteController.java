@@ -428,6 +428,9 @@ public class VorratslisteController implements Initializable {
 
         for (Produkt produkt: produkteAufVorratsliste){
             if (produkt.getAuswahl().isSelected()){
+
+                produkt.getAuswahl().setSelected(false);
+
                 String name = produkt.getName();
                 String art = produkt.getArt();
                 if (produkt.getDatum().getValue() != null) {
