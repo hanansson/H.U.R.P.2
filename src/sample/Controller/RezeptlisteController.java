@@ -166,7 +166,7 @@ public class RezeptlisteController implements Initializable {
 
             while ((s = br.readLine()) != null) {
 
-                Rezept rezept = new Rezept();
+                //Rezept rezept = new Rezept();
 
                 try {
                     rezeptInfo = (JSONObject) parser.parse(s);
@@ -182,34 +182,30 @@ public class RezeptlisteController implements Initializable {
         writer.close();
 
         System.out.println(rezeptAlleInfos.size());
-        boolean selected = false;
+        //boolean selected = false;
 
         ArrayList<JSONObject> rezeptnichtlöschen = new ArrayList<>();
+        rezeptnichtlöschen.addAll(rezeptAlleInfos);
 
-        for(JSONObject rezeptInfo2 : rezeptAlleInfos) {
+        for(JSONObject rezeptInfo : rezeptAlleInfos) {
             for (Rezept rezept : rezepte) {
-                if (rezeptInfo2.get("name").equals(rezept.getTextAnzeigen().getText())) {
-                    selected = true;
-                }
-                if(selected == true){
-                    break;
+                if (rezeptInfo.get("name").equals(rezept.getTextAnzeigen().getText())) {
+                    rezeptnichtlöschen.remove(rezeptInfo);
                 }
             }
-            if(selected == false) {
-                rezeptnichtlöschen.add(rezeptInfo2);
-            }
-            selected = false;
         }
 
-        System.out.println(rezeptnichtlöschen.size());
+        //System.out.println(rezeptnichtlöschen.size());
 
-        for (JSONObject rezeptInfo3 : rezeptnichtlöschen) {
-            FileWriter fw = new FileWriter("Rezeptliste.json");
-            BufferedWriter bw = new BufferedWriter(fw);
-            bw.write(rezeptInfo3.toJSONString());
+        FileWriter fw = new FileWriter("Rezeptliste.json");
+        BufferedWriter bw = new BufferedWriter(fw);
+
+        for (JSONObject rezeptInfo : rezeptnichtlöschen) {
+            bw.write(rezeptInfo.toJSONString());
             bw.newLine();
-            bw.close();
         }
+
+        bw.close();
 
         final ObservableList<Rezept> rezepteObservableList = FXCollections.observableArrayList(rezepteSammlung);
         rezeptTabelle.setItems(rezepteObservableList);

@@ -13,6 +13,11 @@
 
 }
 
+.tab-pane{
+    -fx-background-color: rgba(83, 80, 82, 0.74);
+    -fx-body-color: rgba(83, 80, 82, 0.74);
+}
+
 .stageStyle{
     -fx-background-color: rgba(83, 80, 82, 0.74);
     -fx-background-opacity: 30;
