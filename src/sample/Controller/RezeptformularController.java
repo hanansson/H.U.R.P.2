@@ -80,6 +80,7 @@ public class RezeptformularController implements Initializable {
 
                 FileWriter fw = new FileWriter("Rezeptliste.json", true);
                 fw.write(rezept.toJSONString());
+                fw.write(System.getProperty( "line.separator" ));
                 fw.close();
 
             }
@@ -89,6 +90,8 @@ public class RezeptformularController implements Initializable {
             Scene scene = new Scene(root);
             scene.getStylesheets().add("/sample/styling.css");
             stage.setScene(scene);
+            stage.setResizable(false);
+            stage.sizeToScene();
             stage.show();
             stage = (Stage) rezeptHinzufuegenButton.getScene().getWindow();
             stage.close();
@@ -124,6 +127,8 @@ public class RezeptformularController implements Initializable {
         Scene scene = new Scene(root);
         scene.getStylesheets().add("/sample/styling.css");
         stage.setScene(scene);
+        stage.setResizable(false);
+        stage.sizeToScene();
         stage.show();
         stage = (Stage) abbruchButton.getScene().getWindow();
         stage.close();

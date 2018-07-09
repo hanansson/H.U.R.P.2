@@ -25,6 +25,8 @@ public class HauptmenuController {
         Scene scene = new Scene(root);
         scene.getStylesheets().add("/sample/styling.css");
         stage.setScene(scene);
+        stage.setResizable(false);
+        stage.sizeToScene();
         stage.show();
         stage = (Stage) geheZuVorrat.getScene().getWindow();
         stage.close();
@@ -37,6 +39,8 @@ public class HauptmenuController {
         Scene scene = new Scene(root);
         scene.getStylesheets().add("/sample/styling.css");
         stage.setScene(scene);
+        stage.setResizable(false);
+        stage.sizeToScene();
         stage.show();
         stage = (Stage) geheZuRezepte.getScene().getWindow();
         stage.close();
@@ -48,6 +52,8 @@ public class HauptmenuController {
         Scene scene = new Scene(root);
         scene.getStylesheets().add("/sample/styling.css");
         stage.setScene(scene);
+        stage.setResizable(false);
+        stage.sizeToScene();
         stage.show();
         stage = (Stage) geheZuEinkauf.getScene().getWindow();
         stage.close();

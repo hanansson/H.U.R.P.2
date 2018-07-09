@@ -87,6 +87,8 @@ public class EinkaufsformularController implements Initializable {
             Scene scene = new Scene(root);
             scene.getStylesheets().add("/sample/styling.css");
             stage.setScene(scene);
+            stage.setResizable(false);
+            stage.sizeToScene();
             stage.show();
             stage = (Stage) produktHinzufuegenButton.getScene().getWindow();
             stage.close();
@@ -100,6 +102,8 @@ public class EinkaufsformularController implements Initializable {
         Scene scene = new Scene(root);
         scene.getStylesheets().add("/sample/styling.css");
         stage.setScene(scene);
+        stage.setResizable(false);
+        stage.sizeToScene();
         stage.show();
         stage = (Stage) abbruchButton.getScene().getWindow();
         stage.close();

@@ -65,30 +65,31 @@ public class VorratslisteController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        //Hier durch ist rechts keine weitere unbenutzte Kolumne/Spalte
         nameEingabe.setPromptText("Produktname");
         artEingabe.setPromptText("Produktart");
         datumEingabe.setPromptText("Ablaufdatum");
 
         anzahlEingabe.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1000));
         anzahlEingabe.setEditable(true);
+
         einheitChoiceBox.setItems(FXCollections.observableArrayList(null, new Separator(), "kg", "g", new Separator(), "l", "ml"));
 
 
-        ablaufDatumColumn.setPrefWidth(300);
+        ablaufDatumColumn.setPrefWidth(200);
+
         anzahlColumn.setMinWidth(80);
         anzahlColumn.setMaxWidth(80);
+
         auswahlColumn.setMinWidth(70);
         auswahlColumn.setMaxWidth(70);
+
         einheitColumn.setMinWidth(60);
         einheitColumn.setMaxWidth(60);
 
         tabelleVorrat.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        //Gibt der Tabelle die Spalten/Kolumnen.
         tabelleVorrat.getColumns().addAll( nameColumn, artColumn, ablaufDatumColumn, anzahlColumn, einheitColumn, auswahlColumn);
 
-        //Fügt Kolumnen/Spalten hinzu.
         nameColumn.setCellValueFactory(new PropertyValueFactory<Produkt, String>("Name"));
         artColumn.setCellValueFactory(new PropertyValueFactory<Produkt, String>("Art"));
         anzahlColumn.setCellValueFactory(new PropertyValueFactory<Produkt, Integer>("Anzahl"));
@@ -96,7 +97,6 @@ public class VorratslisteController implements Initializable {
         ablaufDatumColumn.setCellValueFactory(new PropertyValueFactory<Produkt, Date>("Datum"));
         auswahlColumn.setCellValueFactory(new PropertyValueFactory<Produkt, String>("Auswahl"));
 
-        //sortierenName-Button wird im Kolumnentitel eingesetzt. Dazu werden Grafikeinstellungen vorgenommen(unwichtig).
         sortierenName.setStyle("-fx-background-color: transparent");
         sortierenName.setPrefSize(nameColumn.getPrefWidth(), 2);
         nameColumn.setGraphic(sortierenName);
@@ -113,7 +113,6 @@ public class VorratslisteController implements Initializable {
             }
         });
 
-        //sortierenArt-Button wird im Kolumnentitel eingesetzt.
         sortierenArt.setStyle("-fx-background-color: transparent");
         sortierenArt.setPrefSize(artColumn.getPrefWidth(), 2);
         artColumn.setGraphic(sortierenArt);
@@ -151,7 +150,6 @@ public class VorratslisteController implements Initializable {
             }
         });
 
-        //sortierenAnzahl-Button wird im Kolumnentitel eingesetzt.
         sortierenAnzahl.setStyle("-fx-background-color: transparent");
         sortierenAnzahl.setPrefSize(anzahlColumn.getPrefWidth(), 2);
         anzahlColumn.setGraphic(sortierenAnzahl);
@@ -178,12 +176,16 @@ public class VorratslisteController implements Initializable {
         sortierenEinheit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                quicksort.namequicksort(produkteAufVorratsliste);
+                quicksort.einheitquicksort(produkteAufVorratsliste);
+                for(Produkt produkt : produkteAufVorratsliste) {
+                    if(produkt.getEinheit() == "x"){
+                        produkt.setEinheit(null);
+                    }
+                }
                 final ObservableList<Produkt> produkteObservableList = FXCollections.observableArrayList(produkteAufVorratsliste);
                 tabelleVorrat.setItems(produkteObservableList);
             }
         });
-
 
         allesAuswählen.setStyle("-fx-background-color: transparent");
         allesAuswählen.setPrefSize(auswahlColumn.getPrefWidth(), 2);
@@ -206,8 +208,6 @@ public class VorratslisteController implements Initializable {
 
         vorratslisteFuellen();
 
-        //Wenn der Vorrat(ArrayList) mehr als ein Produkt enthält, dann wird mit Bubblesort sortiert und der Vorrat wird in der Tabelle sortiert ausgegeben.
-        //Damit der Vorrat eingelesen werden kann, wird aus Basis der ArrayList eine ObservableList erstellt. Da javafx-Elemente nur mit ObservableLists arbeiten können.
         if(produkteAufVorratsliste.size() > 1) {
             quicksort.namequicksort(produkteAufVorratsliste);
             ArrayList<Produkt> vorrat02 = new ArrayList<>(produkteAufVorratsliste);
@@ -231,21 +231,16 @@ public class VorratslisteController implements Initializable {
             String s;
             br = new BufferedReader(new FileReader("Vorratsliste.json"));
 
-            //Wenn in der JSON-Datei eine leere Zeile ist bricht die Schleife ab.
             while ((s = br.readLine()) != null) {
 
-                //Produkt muss in der Schleife initialisiert werden!
                 Produkt produkt = new Produkt("", "", "", 0, LocalDate.of(1999, 9, 9));
 
-                //Liest aus der Textdatei eine Zeile und speichert sie in einem JSON-Object.
                 try {
                     produktJ = (JSONObject) parser.parse(s);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
 
-                //Wadelt die Attribute aus einem JSON-Object um und speichert sie in neuen Variablen.
-                //Die Variablen werden einem Objekt der Klasse Produkt hinzugefügt und dieses wird in einer ArrayList gespeichert.
                 String name1 = (String) produktJ.get("name");
                 String art1 = (String) produktJ.get("art");
                 String einheit1 = (String) produktJ.get("einheit");
@@ -280,7 +275,6 @@ public class VorratslisteController implements Initializable {
 
     public void produktHinzufuegen (ActionEvent event) throws IOException {
 
-        //neues Produkt-Objekt wird erstellt.
         Produkt produkt = new Produkt("Name", "Art","", 0,  LocalDate.of(1999,9,9));
 
         produkt.setName(nameEingabe.getText());
@@ -288,6 +282,7 @@ public class VorratslisteController implements Initializable {
         produkt.setEinheit((String) einheitChoiceBox.getValue());
         produkt.getDatum().setValue(datumEingabe.getValue());
         int anzahl2 = (int) anzahlEingabe.getValue();
+
         produkt.getAnzahl().setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1000, anzahl2));
 
         if(nameEingabe.getText().isEmpty() || artEingabe.getText().isEmpty()){
@@ -298,7 +293,6 @@ public class VorratslisteController implements Initializable {
         }else {
             produkteAufVorratsliste.add(produkt);
 
-            //****JSONObject produktJ = new JSONObject();
             String name = nameEingabe.getText();
             String art = artEingabe.getText();
             String einheit = (String) einheitChoiceBox.getValue();
@@ -318,9 +312,6 @@ public class VorratslisteController implements Initializable {
             produktJ.put("einheit", einheit);
 
 
-            //Checkt ob schon eine JSON-Datei besteht. Wenn ja wird ein neues Produkt himzugefügt, wenn nicht wird ne neu Datei erzeugt und ein Produkt reingeschrieben.
-            //Ist aber noch fehlerhaft!
-            //??????????????????????????????????????????????????????????????????????????????????????????
             File f = new File("Vorratsliste.json");
             if (f.exists()) {
 
@@ -488,6 +479,8 @@ public class VorratslisteController implements Initializable {
         Scene scene = new Scene(root);
         scene.getStylesheets().add("/sample/styling.css");
         stage.setScene(scene);
+        stage.setResizable(false);
+        stage.sizeToScene();
         stage.show();
         stage = (Stage) zumHauptmenuButton.getScene().getWindow();
         stage.close();

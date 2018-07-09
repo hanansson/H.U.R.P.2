@@ -60,8 +60,10 @@ public class EinkaufslisteController implements Initializable {
 
         anzahlColumn.setMinWidth(80);
         anzahlColumn.setMaxWidth(80);
+
         auswahlColumn.setMinWidth(70);
         auswahlColumn.setMaxWidth(70);
+
         einheitColumn.setMinWidth(60);
         einheitColumn.setMaxWidth(60);
 
@@ -133,7 +135,12 @@ public class EinkaufslisteController implements Initializable {
         sortierenEinheit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                quicksort.namequicksort(produkteAufEinkaufsliste);
+                quicksort.einheitquicksort(produkteAufEinkaufsliste);
+                for(Produkt produkt : produkteAufEinkaufsliste) {
+                    if(produkt.getEinheit() == "x"){
+                        produkt.setEinheit(null);
+                    }
+                }
                 final ObservableList<Produkt> produkteObservableList = FXCollections.observableArrayList(produkteAufEinkaufsliste);
                 tabelleEinkaufsliste.setItems(produkteObservableList);
             }
@@ -214,6 +221,8 @@ public class EinkaufslisteController implements Initializable {
         Scene scene = new Scene(root);
         scene.getStylesheets().add("/sample/styling.css");
         stage.setScene(scene);
+        stage.setResizable(false);
+        stage.sizeToScene();
         stage.show();
         stage = (Stage) zumHauptmenuButton.getScene().getWindow();
         stage.close();
@@ -410,6 +419,8 @@ public class EinkaufslisteController implements Initializable {
         Scene scene = new Scene(root);
         scene.getStylesheets().add("/sample/styling.css");
         stage.setScene(scene);
+        stage.setResizable(false);
+        stage.sizeToScene();
         stage.show();
         stage = (Stage) zumHauptmenuButton.getScene().getWindow();
         stage.close();
