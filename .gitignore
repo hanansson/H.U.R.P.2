@@ -1,0 +1,10 @@
+/bin/
+*.fxml
+.classpath
+*.xml
+*.xml
+*.xml
+*.xml
+.project
+*.iml
+*.jpg
