@@ -27,7 +27,6 @@
     -fx-font-size: 12px;
 }
 
-
 .table-view:focused{
     -fx-background-color: transparent;
 }

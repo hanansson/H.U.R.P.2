@@ -105,7 +105,6 @@ public class RezeptlisteController implements Initializable {
 
                 rezept.getTextAnzeigen().setText(name );
                 rezept.getTextAnzeigen().setPrefWidth(2000);
-                //rezept.getTextAnzeigen().setStyle("-fx-background-color: transparent");
                 String finalText = text + "\n" + text1;
                 rezept.getTextAnzeigen().setOnMouseClicked(event -> {
 
