@@ -39,7 +39,7 @@ public class EinkaufsformularController implements Initializable {
 
         anzahlEingabe.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1000));
         anzahlEingabe.setEditable(true);
-        einheitChoiceBox.setItems(FXCollections.observableArrayList("", new Separator(), "kg", "g", new Separator(), "l", "ml"));
+        einheitChoiceBox.setItems(FXCollections.observableArrayList(null, new Separator(), "kg", "g", new Separator(), "l", "ml"));
 
     }
 

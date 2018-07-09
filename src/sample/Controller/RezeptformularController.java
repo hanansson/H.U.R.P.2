@@ -47,7 +47,7 @@ public class RezeptformularController implements Initializable {
 
         zutatAnzahlEingabe.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1000, 1));
         zutatAnzahlEingabe.setEditable(true);
-        einheitChoiceBox.setItems(FXCollections.observableArrayList("", new Separator(), "kg", "g", new Separator(), "l", "ml"));
+        einheitChoiceBox.setItems(FXCollections.observableArrayList(null, new Separator(), "kg", "g", new Separator(), "l", "ml"));
 
     }
 
