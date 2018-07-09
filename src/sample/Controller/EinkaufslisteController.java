@@ -35,7 +35,7 @@ public class EinkaufslisteController implements Initializable {
     public Button sortierenArt = new Button("Art");
     public Button sortierenAnzahl = new Button("Anzahl");
     public Button sortierenEinheit = new Button("Einheit");
-    public Button allesAuswählen = new Button("Alles");
+    public Button allesAuswählen = new Button("Auswahl");
 
     public TableView tabelleEinkaufsliste;
 
@@ -58,10 +58,10 @@ public class EinkaufslisteController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        anzahlColumn.setMinWidth(70);
-        anzahlColumn.setMaxWidth(70);
-        auswahlColumn.setMinWidth(60);
-        auswahlColumn.setMaxWidth(60);
+        anzahlColumn.setMinWidth(80);
+        anzahlColumn.setMaxWidth(80);
+        auswahlColumn.setMinWidth(70);
+        auswahlColumn.setMaxWidth(70);
         einheitColumn.setMinWidth(60);
         einheitColumn.setMaxWidth(60);
 

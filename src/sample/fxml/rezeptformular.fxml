@@ -13,9 +13,9 @@
       <TextField fx:id="nameEingabe" layoutX="25.0" layoutY="29.0" prefHeight="27.0" prefWidth="170.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0" />
       <TextField fx:id="zutatEingabe" layoutX="25.0" layoutY="355.0" prefHeight="27.0" prefWidth="170.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="355.0" />
       <Spinner fx:id="zutatAnzahlEingabe" layoutX="209.0" layoutY="355.0" prefHeight="27.0" prefWidth="79.0" AnchorPane.leftAnchor="200.0" />
-      <Button fx:id="zutatHinzufuegenButton" layoutX="378.0" layoutY="355.0" mnemonicParsing="false" onAction="#zutatHinzufuegen" text="+" AnchorPane.leftAnchor="360.0" />
+      <Button fx:id="zutatHinzufuegenButton" layoutX="355.0" layoutY="355.0" mnemonicParsing="false" onAction="#zutatHinzufuegen" text="+" AnchorPane.leftAnchor="355.0" />
       <Button fx:id="abbruchButton" layoutX="367.0" layoutY="20.0" mnemonicParsing="false" onAction="#abbrechen" prefHeight="27.0" prefWidth="93.0" text="abbrechen" AnchorPane.topAnchor="20.0" />
-      <Button fx:id="rezeptHinzufuegenButton" layoutX="258.0" layoutY="20.0" mnemonicParsing="false" onAction="#rezeptHinzufuegen" prefHeight="27.0" prefWidth="93.0" text="hinzufügen" AnchorPane.topAnchor="20.0" />
-      <ChoiceBox fx:id="einheitChoiceBox" layoutX="305.0" layoutY="355.0" prefHeight="27.0" prefWidth="57.0" AnchorPane.leftAnchor="290.0" />
+      <Button fx:id="rezeptHinzufuegenButton" layoutX="264.0" layoutY="20.0" mnemonicParsing="false" onAction="#rezeptHinzufuegen" prefHeight="27.0" prefWidth="93.0" text="hinzufügen" AnchorPane.topAnchor="20.0" />
+      <ChoiceBox fx:id="einheitChoiceBox" layoutX="289.0" layoutY="355.0" prefHeight="27.0" prefWidth="57.0" AnchorPane.leftAnchor="289.0" />
    </children>
 </AnchorPane>

@@ -6,14 +6,14 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="500.0" prefWidth="548.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller.EinkaufslisteController">
+<AnchorPane prefHeight="500.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller.EinkaufslisteController">
    <children>
       <TableView fx:id="tabelleEinkaufsliste" layoutX="164.0" layoutY="128.0" prefHeight="332.0" prefWidth="328.0" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="180.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="120.0" />
-      <Button fx:id="hinzufuegenButton" layoutX="38.0" layoutY="262.0" mnemonicParsing="false" onAction="#produktHinzufuegen" prefHeight="27.0" prefWidth="93.0" text="hinzufügen" AnchorPane.bottomAnchor="211.0" AnchorPane.leftAnchor="40.0" />
-      <Button fx:id="loeschenButton" layoutX="38.0" layoutY="312.0" mnemonicParsing="false" onAction="#loeschen" prefHeight="27.0" prefWidth="93.0" text="löschen" AnchorPane.bottomAnchor="161.0" AnchorPane.leftAnchor="40.0" />
-      <Button fx:id="produkteVorratHinzufuegenButton" layoutX="38.0" layoutY="212.0" mnemonicParsing="false" onAction="#produkteVorratHinzufuegen" prefHeight="27.0" prefWidth="93.0" text="eingekauft" AnchorPane.bottomAnchor="261.0" AnchorPane.leftAnchor="40.0" />
-      <Button fx:id="zumHauptmenuButton" layoutX="38.0" layoutY="362.0" mnemonicParsing="false" onAction="#zumHauptmenu" prefHeight="27.0" prefWidth="93.0" text="zurück" AnchorPane.bottomAnchor="111.0" AnchorPane.leftAnchor="40.0" />
-      <Label fx:id="EinkaufslisteLabel" layoutX="239.0" layoutY="38.0" text="Einkäufe" textFill="WHITE" AnchorPane.topAnchor="40.0">
+      <Button fx:id="hinzufuegenButton" layoutX="38.0" layoutY="262.0" mnemonicParsing="false" onAction="#produktHinzufuegen" prefHeight="27.0" prefWidth="93.0" text="hinzufügen" AnchorPane.bottomAnchor="211.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="510.0" />
+      <Button fx:id="loeschenButton" layoutX="38.0" layoutY="312.0" mnemonicParsing="false" onAction="#loeschen" prefHeight="27.0" prefWidth="93.0" text="löschen" AnchorPane.bottomAnchor="161.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="510.0" />
+      <Button fx:id="produkteVorratHinzufuegenButton" layoutX="38.0" layoutY="212.0" mnemonicParsing="false" onAction="#produkteVorratHinzufuegen" prefHeight="27.0" prefWidth="93.0" text="eingekauft" AnchorPane.bottomAnchor="261.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="510.0" />
+      <Button fx:id="zumHauptmenuButton" layoutX="38.0" layoutY="362.0" mnemonicParsing="false" onAction="#zumHauptmenu" prefHeight="27.0" prefWidth="93.0" text="zurück" AnchorPane.bottomAnchor="111.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="510.0" />
+      <Label fx:id="EinkaufslisteLabel" layoutX="284.0" layoutY="42.0" text="Einkäufe" textFill="WHITE" AnchorPane.topAnchor="40.0">
          <font>
             <Font name="Verdana Bold" size="43.0" />
          </font></Label>

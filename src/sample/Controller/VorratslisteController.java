@@ -46,7 +46,7 @@ public class VorratslisteController implements Initializable {
     public Button sortierenDatum = new Button("Datum");
     public Button sortierenAnzahl = new Button("Anzahl");
     public Button sortierenEinheit = new Button("Einheit");
-    public Button allesAuswählen = new Button("Alles");
+    public Button allesAuswählen = new Button("Auswahl");
 
     public TableView tabelleVorrat;
 
