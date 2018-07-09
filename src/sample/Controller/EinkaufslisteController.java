@@ -8,10 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.SpinnerValueFactory;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import org.json.simple.JSONObject;
@@ -37,6 +34,7 @@ public class EinkaufslisteController implements Initializable {
     public Button sortierenName = new Button("Name");
     public Button sortierenArt = new Button("Art");
     public Button sortierenAnzahl = new Button("Anzahl");
+    public Button sortierenEinheit = new Button("Einheit");
     public Button allesAuswählen = new Button("Alles");
 
     public TableView tabelleEinkaufsliste;
@@ -44,6 +42,7 @@ public class EinkaufslisteController implements Initializable {
     public TableColumn nameColumn = new TableColumn("");
     public TableColumn artColumn = new TableColumn("");
     public TableColumn anzahlColumn = new TableColumn("");
+    public TableColumn einheitColumn = new TableColumn("");
     public TableColumn auswahlColumn = new TableColumn("");
 
     public ArrayList<Produkt> produkteAufEinkaufsliste = new ArrayList<>();
@@ -63,15 +62,18 @@ public class EinkaufslisteController implements Initializable {
         anzahlColumn.setMaxWidth(70);
         auswahlColumn.setMinWidth(60);
         auswahlColumn.setMaxWidth(60);
+        einheitColumn.setMinWidth(60);
+        einheitColumn.setMaxWidth(60);
 
         tabelleEinkaufsliste.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         nameColumn.setCellValueFactory(new PropertyValueFactory<Produkt, String>("Name"));
         artColumn.setCellValueFactory(new PropertyValueFactory<Produkt, String>("Art"));
         anzahlColumn.setCellValueFactory(new PropertyValueFactory<Produkt, Integer>("Anzahl"));
+        einheitColumn.setCellValueFactory(new PropertyValueFactory<Produkt, String>("Einheit"));
         auswahlColumn.setCellValueFactory(new PropertyValueFactory<Produkt, String>("Auswahl"));
 
-        tabelleEinkaufsliste.getColumns().addAll(nameColumn, artColumn, anzahlColumn, auswahlColumn);
+        tabelleEinkaufsliste.getColumns().addAll(nameColumn, artColumn, anzahlColumn, einheitColumn, auswahlColumn);
 
         sortierenName.setStyle("-fx-background-color: transparent");
         sortierenName.setPrefSize(nameColumn.getPrefWidth(), 2);
@@ -121,6 +123,22 @@ public class EinkaufslisteController implements Initializable {
             }
         });
 
+        sortierenEinheit.setStyle("-fx-background-color: transparent");
+        sortierenEinheit.setPrefSize(einheitColumn.getPrefWidth(), 2);
+        einheitColumn.setGraphic(sortierenEinheit);
+        einheitColumn.setSortable(false);
+        einheitColumn.setStyle( "-fx-alignment: CENTER;");
+        sortierenEinheit.setMaxSize(2000,2000);
+
+        sortierenEinheit.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                quicksort.namequicksort(produkteAufEinkaufsliste);
+                final ObservableList<Produkt> produkteObservableList = FXCollections.observableArrayList(produkteAufEinkaufsliste);
+                tabelleEinkaufsliste.setItems(produkteObservableList);
+            }
+        });
+
         allesAuswählen.setStyle("-fx-background-color: transparent");
         allesAuswählen.setPrefSize(auswahlColumn.getPrefWidth(), 2);
         auswahlColumn.setGraphic(allesAuswählen);
@@ -158,7 +176,7 @@ public class EinkaufslisteController implements Initializable {
 
             while ((s1 = br1.readLine()) != null) {
 
-                Produkt produkt = new Produkt("", "", 0, LocalDate.of(1999, 9, 9));
+                Produkt produkt = new Produkt("", "", "", 0, LocalDate.of(1999, 9, 9));
 
                 try {
                     produktJ = (JSONObject) parser.parse(s1);
@@ -168,11 +186,14 @@ public class EinkaufslisteController implements Initializable {
 
                 String name1 = (String) produktJ.get("name");
                 String art1 = (String) produktJ.get("art");
+                String einheit1 = (String) produktJ.get("einheit");
                 int anzahl1 = (int) (long) produktJ.get("anzahl");
                 produkt.setName(name1);
                 produkt.setArt(art1);
+                produkt.setEinheit(einheit1);
                 produkt.getDatum().setValue(null);
-                produkt.getAnzahl().setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 99, anzahl1));
+                produkt.getAnzahl().setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1000, anzahl1));
+                produkt.getAnzahl().setEditable(true);
                 produkteAufEinkaufsliste.add(produkt);
             }
 
@@ -218,9 +239,11 @@ public class EinkaufslisteController implements Initializable {
         for (Produkt produkt1: produkteAufEinkaufsliste) {
             String name = produkt1.getName();
             String art = produkt1.getArt();
+            String einheit = produkt1.getEinheit();
             int anzahl = (int) produkt1.getAnzahl().getValue();
             produktJ.put("name", name);
             produktJ.put("art", art);
+            produktJ.put("einheit", einheit);
             produktJ.put("anzahl", anzahl);
             produktJ.put("datum", null);
 
@@ -253,7 +276,7 @@ public class EinkaufslisteController implements Initializable {
 
             while ((s = br.readLine()) != null) {
 
-                Produkt produktAusVorrat = new Produkt("", "", 0, LocalDate.of(1999, 9, 9));
+                Produkt produktAusVorrat = new Produkt("", "", "", 0, LocalDate.of(1999, 9, 9));
 
                 try {
                     produktJ = (JSONObject) parser.parse(s);
@@ -263,6 +286,7 @@ public class EinkaufslisteController implements Initializable {
 
                 String name1 = (String) produktJ.get("name");
                 String art1 = (String) produktJ.get("art");
+                String einheit1 = (String) produktJ.get("einheit");
                 if (produktJ.get("datum") != null) {
                     String datum1 = (String) produktJ.get("datum");
                     LocalDate datum2 = LocalDate.parse(datum1);
@@ -274,7 +298,9 @@ public class EinkaufslisteController implements Initializable {
                 int anzahl1 = (int) (long) produktJ.get("anzahl");
                 produktAusVorrat.setName(name1);
                 produktAusVorrat.setArt(art1);
-                produktAusVorrat.getAnzahl().setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 99, anzahl1));
+                produktAusVorrat.setEinheit(einheit1);
+                produktAusVorrat.getAnzahl().setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1000, anzahl1));
+                produktAusVorrat.getAnzahl().setEditable(true);
 
                 produkteTemporärerListe.add(produktAusVorrat);
 
@@ -288,7 +314,7 @@ public class EinkaufslisteController implements Initializable {
                             int eingekauft = (int) produktAufEinkaufsliste.getAnzahl().getValue();
                             int gesamtanzahl = anzahl + eingekauft;
                             //System.out.println(gesamtanzahl);
-                            produktAusVorrat.getAnzahl().setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 99, gesamtanzahl));
+                            produktAusVorrat.getAnzahl().setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1000, gesamtanzahl));
                             //System.out.println(produktAusVorrat.getAnzahl().getValue());
 
                             produkteTemporärerListe.add(produktAusVorrat);
@@ -313,6 +339,7 @@ public class EinkaufslisteController implements Initializable {
 
                 String name = produktNeuerVorrat.getName();
                 String art = produktNeuerVorrat.getArt();
+                String einheit = produktNeuerVorrat.getEinheit();
                 if (produktNeuerVorrat.getDatum().getValue() != null) {
                     LocalDate datum = produktNeuerVorrat.getDatum().getValue();
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -326,6 +353,7 @@ public class EinkaufslisteController implements Initializable {
                 int anzahl = (int) produktNeuerVorrat.getAnzahl().getValue();
                 produktJ.put("name", name);
                 produktJ.put("art", art);
+                produktJ.put("einheit", einheit);
                 produktJ.put("anzahl", anzahl);
 
                 //System.out.println(produktJ.get("name"));
@@ -357,6 +385,7 @@ public class EinkaufslisteController implements Initializable {
         for (Produkt produkt: produkteAufEinkaufsliste){
             String name = produkt.getName();
             String art = produkt.getArt();
+            String einheit = produkt.getEinheit();
             if (produkt.getDatum().getValue() != null) {
                 LocalDate datum = produkt.getDatum().getValue();
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -368,6 +397,7 @@ public class EinkaufslisteController implements Initializable {
             int anzahl = (int) produkt.getAnzahl().getValue();
             produktJ.put("name", name);
             produktJ.put("art", art);
+            produktJ.put("einheit", einheit);
             produktJ.put("anzahl", anzahl);
             bw.write(produktJ.toJSONString());
             bw.newLine();

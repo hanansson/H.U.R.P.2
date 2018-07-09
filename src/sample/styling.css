@@ -103,6 +103,28 @@
     -fx-text-fill: white;
 }
 
+.choice-box{
+    -fx-background-color: rgba(83, 80, 82, 0.74);
+    -fx-body-color: rgba(83, 80, 82, 0.74);
+    -fx-border-color: rgba(83, 80, 82, 0.74);
+    -fx-text-fill: white;
+}
+
+.choice-box .context-menu,
+.choice-box .menu-item:focused,
+.choice-box .menu-item > .label,
+.choice-box .menu-item:focused,
+.choice-box > .label {
+    -fx-background-color: rgba(83, 80, 82, 0.74);
+    -fx-body-color: rgba(83, 80, 82, 0.74);
+    -fx-border-color: rgba(83, 80, 82, 0.74);
+    -fx-text-fill: white;
+}
+
+.choice-box .arrow,
+.choice-box .arrow-button{
+    -fx-background-color: white;
+}
 
 /*.datepicker-button {
 

@@ -35,6 +35,7 @@ public class VorratslisteController implements Initializable {
     public TextField artEingabe;
     public Spinner anzahlEingabe;
     public DatePicker datumEingabe;
+    public ChoiceBox einheitChoiceBox;
 
     public Button hinzufuegenButton;
     public Button loeschenButton;
@@ -44,6 +45,7 @@ public class VorratslisteController implements Initializable {
     public Button sortierenArt = new Button("Art");
     public Button sortierenDatum = new Button("Datum");
     public Button sortierenAnzahl = new Button("Anzahl");
+    public Button sortierenEinheit = new Button("Einheit");
     public Button allesAuswählen = new Button("Alles");
 
     public TableView tabelleVorrat;
@@ -52,6 +54,7 @@ public class VorratslisteController implements Initializable {
     TableColumn artColumn = new TableColumn("");
     TableColumn ablaufDatumColumn = new TableColumn("");
     TableColumn anzahlColumn = new TableColumn("");
+    TableColumn einheitColumn = new TableColumn("");
     TableColumn auswahlColumn = new TableColumn("");
 
     Stage stage = new Stage();
@@ -67,23 +70,29 @@ public class VorratslisteController implements Initializable {
         artEingabe.setPromptText("Produktart");
         datumEingabe.setPromptText("Ablaufdatum");
 
-        anzahlEingabe.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 99));
+        anzahlEingabe.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1000));
+        anzahlEingabe.setEditable(true);
+        einheitChoiceBox.setItems(FXCollections.observableArrayList("", new Separator(), "kg", "g", new Separator(), "l", "ml"));
+
 
         ablaufDatumColumn.setPrefWidth(300);
         anzahlColumn.setMinWidth(80);
         anzahlColumn.setMaxWidth(80);
         auswahlColumn.setMinWidth(70);
         auswahlColumn.setMaxWidth(70);
+        einheitColumn.setMinWidth(60);
+        einheitColumn.setMaxWidth(60);
 
         tabelleVorrat.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         //Gibt der Tabelle die Spalten/Kolumnen.
-        tabelleVorrat.getColumns().addAll( nameColumn, artColumn, ablaufDatumColumn, anzahlColumn, auswahlColumn);
+        tabelleVorrat.getColumns().addAll( nameColumn, artColumn, ablaufDatumColumn, anzahlColumn, einheitColumn, auswahlColumn);
 
         //Fügt Kolumnen/Spalten hinzu.
         nameColumn.setCellValueFactory(new PropertyValueFactory<Produkt, String>("Name"));
         artColumn.setCellValueFactory(new PropertyValueFactory<Produkt, String>("Art"));
         anzahlColumn.setCellValueFactory(new PropertyValueFactory<Produkt, Integer>("Anzahl"));
+        einheitColumn.setCellValueFactory(new PropertyValueFactory<Produkt, String>("Einheit"));
         ablaufDatumColumn.setCellValueFactory(new PropertyValueFactory<Produkt, Date>("Datum"));
         auswahlColumn.setCellValueFactory(new PropertyValueFactory<Produkt, String>("Auswahl"));
 
@@ -159,6 +168,23 @@ public class VorratslisteController implements Initializable {
             }
         });
 
+        sortierenEinheit.setStyle("-fx-background-color: transparent");
+        sortierenEinheit.setPrefSize(einheitColumn.getPrefWidth(), 2);
+        einheitColumn.setGraphic(sortierenEinheit);
+        einheitColumn.setSortable(false);
+        einheitColumn.setStyle( "-fx-alignment: CENTER;");
+        sortierenEinheit.setMaxSize(2000,2000);
+
+        sortierenEinheit.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                quicksort.namequicksort(produkteAufVorratsliste);
+                final ObservableList<Produkt> produkteObservableList = FXCollections.observableArrayList(produkteAufVorratsliste);
+                tabelleVorrat.setItems(produkteObservableList);
+            }
+        });
+
+
         allesAuswählen.setStyle("-fx-background-color: transparent");
         allesAuswählen.setPrefSize(auswahlColumn.getPrefWidth(), 2);
         auswahlColumn.setGraphic(allesAuswählen);
@@ -177,57 +203,6 @@ public class VorratslisteController implements Initializable {
                 }
             }
         });
-
-        /*BufferedReader br = null;
-        JSONParser parser = new JSONParser();
-
-
-        try {
-
-            String s;
-            br = new BufferedReader(new FileReader("Vorratsliste.json"));
-
-            //Wenn in der JSON-Datei eine leere Zeile ist bricht die Schleife ab.
-            while ((s = br.readLine()) != null) {
-
-                //Produkt muss in der Schleife initialisiert werden!
-                Produkt produkt = new Produkt("", "", 0, LocalDate.of(1999, 9, 9));
-
-                //Liest aus der Textdatei eine Zeile und speichert sie in einem JSON-Object.
-                try {
-                    produktJ = (JSONObject) parser.parse(s);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-
-                //Wadelt die Attribute aus einem JSON-Object um und speichert sie in neuen Variablen.
-                //Die Variablen werden einem Objekt der Klasse Produkt hinzugefügt und dieses wird in einer ArrayList gespeichert.
-                String name1 = (String) produktJ.get("name");
-                String art1 = (String) produktJ.get("art");
-                if(produktJ.get("datum") != null) {
-                    String datum1 = (String) produktJ.get("datum");
-                    LocalDate datum2 = LocalDate.parse(datum1);
-                    produkt.getDatum().setValue(datum2);
-                } else {
-                    produkt.getDatum().setValue(null);
-                }
-                int anzahl1 = (int) (long) produktJ.get("anzahl");
-                produkt.setName(name1);
-                produkt.setArt(art1);
-                produkt.getAnzahl().setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 99, anzahl1));
-                produkteAufVorratsliste.add(produkt);
-
-            }
-
-        } catch(IOException e){
-            e.printStackTrace();
-        } finally{
-            try {
-                if (br != null) br.close();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        }*/
 
         vorratslisteFuellen();
 
@@ -260,7 +235,7 @@ public class VorratslisteController implements Initializable {
             while ((s = br.readLine()) != null) {
 
                 //Produkt muss in der Schleife initialisiert werden!
-                Produkt produkt = new Produkt("", "", 0, LocalDate.of(1999, 9, 9));
+                Produkt produkt = new Produkt("", "", "", 0, LocalDate.of(1999, 9, 9));
 
                 //Liest aus der Textdatei eine Zeile und speichert sie in einem JSON-Object.
                 try {
@@ -273,6 +248,7 @@ public class VorratslisteController implements Initializable {
                 //Die Variablen werden einem Objekt der Klasse Produkt hinzugefügt und dieses wird in einer ArrayList gespeichert.
                 String name1 = (String) produktJ.get("name");
                 String art1 = (String) produktJ.get("art");
+                String einheit1 = (String) produktJ.get("einheit");
                 if(produktJ.get("datum") != null) {
                     String datum1 = (String) produktJ.get("datum");
                     LocalDate datum2 = LocalDate.parse(datum1);
@@ -283,7 +259,9 @@ public class VorratslisteController implements Initializable {
                 int anzahl1 = (int) (long) produktJ.get("anzahl");
                 produkt.setName(name1);
                 produkt.setArt(art1);
-                produkt.getAnzahl().setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 99, anzahl1));
+                produkt.setEinheit(einheit1);
+                produkt.getAnzahl().setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1000, anzahl1));
+                produkt.getAnzahl().setEditable(true);
                 produkteAufVorratsliste.add(produkt);
 
             }
@@ -303,13 +281,14 @@ public class VorratslisteController implements Initializable {
     public void produktHinzufuegen (ActionEvent event) throws IOException {
 
         //neues Produkt-Objekt wird erstellt.
-        Produkt produkt = new Produkt("Name", "Art",0,  LocalDate.of(1999,9,9));
+        Produkt produkt = new Produkt("Name", "Art","", 0,  LocalDate.of(1999,9,9));
 
         produkt.setName(nameEingabe.getText());
         produkt.setArt(artEingabe.getText());
+        produkt.setEinheit((String) einheitChoiceBox.getValue());
         produkt.getDatum().setValue(datumEingabe.getValue());
         int anzahl2 = (int) anzahlEingabe.getValue();
-        produkt.getAnzahl().setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 99, anzahl2));
+        produkt.getAnzahl().setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1000, anzahl2));
 
         if(nameEingabe.getText().isEmpty() || artEingabe.getText().isEmpty()){
             nameEingabe.setPromptText("Produktname benötigt");
@@ -322,6 +301,7 @@ public class VorratslisteController implements Initializable {
             //****JSONObject produktJ = new JSONObject();
             String name = nameEingabe.getText();
             String art = artEingabe.getText();
+            String einheit = (String) einheitChoiceBox.getValue();
             int anzahl = (int) anzahlEingabe.getValue();
             if (produkt.getDatum().getValue() != null) {
                 LocalDate datum = produkt.getDatum().getValue();
@@ -335,6 +315,7 @@ public class VorratslisteController implements Initializable {
             produktJ.put("name", name);
             produktJ.put("art", art);
             produktJ.put("anzahl", anzahl);
+            produktJ.put("einheit", einheit);
 
 
             //Checkt ob schon eine JSON-Datei besteht. Wenn ja wird ein neues Produkt himzugefügt, wenn nicht wird ne neu Datei erzeugt und ein Produkt reingeschrieben.
@@ -376,6 +357,7 @@ public class VorratslisteController implements Initializable {
                 produkteAufTemporärerListe.add(produkt);
                 String name = produkt.getName();
                 String art = produkt.getArt();
+                String einheit = produkt.getEinheit();
                 if (produkt.getDatum().getValue() != null) {
                     LocalDate datum = produkt.getDatum().getValue();
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -387,6 +369,7 @@ public class VorratslisteController implements Initializable {
                 int anzahl = (int) produkt.getAnzahl().getValue();
                 produktJ.put("name", name);
                 produktJ.put("art", art);
+                produktJ.put("einheit", einheit);
                 produktJ.put("anzahl", anzahl);
             }
         }
@@ -433,6 +416,7 @@ public class VorratslisteController implements Initializable {
 
                 String name = produkt.getName();
                 String art = produkt.getArt();
+                String einheit = produkt.getEinheit();
                 if (produkt.getDatum().getValue() != null) {
                     LocalDate datum = produkt.getDatum().getValue();
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -445,6 +429,7 @@ public class VorratslisteController implements Initializable {
                 produktJ.put("name", name);
                 produktJ.put("art", art);
                 produktJ.put("anzahl", anzahl);
+                produktJ.put("einheit", einheit);
 
                 File f = new File("Einkaufsliste.json");
                 if (f.exists()) {
@@ -478,6 +463,7 @@ public class VorratslisteController implements Initializable {
         for (Produkt produkt: produkteAufVorratsliste){
             String name = produkt.getName();
             String art = produkt.getArt();
+            String einheit = produkt.getEinheit();
             if (produkt.getDatum().getValue() != null) {
                 LocalDate datum = produkt.getDatum().getValue();
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -490,6 +476,7 @@ public class VorratslisteController implements Initializable {
             produktJ.put("name", name);
             produktJ.put("art", art);
             produktJ.put("anzahl", anzahl);
+            produktJ.put("einheit", einheit);
             bw.write(produktJ.toJSONString());
             bw.newLine();
 

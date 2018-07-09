@@ -94,7 +94,13 @@ public class RezeptlisteController implements Initializable {
 
                 for (int i = 0; i < alleZutaten.size(); i ++){
                     JSONObject zutat = (JSONObject) alleZutaten.get(i);
-                    zutatText = "\n" + zutat.get("anzahl") + "x " + zutat.get("name");
+                    String einheit;
+                    if(zutat.get("einheit") == null){
+                        einheit = "x";
+                    } else {
+                        einheit = (String) zutat.get("einheit");
+                    }
+                    zutatText = "\n" + zutat.get("anzahl") + einheit + " " + zutat.get("name");
                     text1 = text1 + zutatText;
                 }
 
@@ -250,7 +256,13 @@ public class RezeptlisteController implements Initializable {
 
             for (int i = 0; i < alleZutaten.size(); i ++){
                 JSONObject zutat = (JSONObject) alleZutaten.get(i);
-                zutatText = "\n" + zutat.get("anzahl") + "x " + zutat.get("name");
+                String einheit;
+                if(zutat.get("einheit") == null){
+                    einheit = "x";
+                } else {
+                    einheit = (String) zutat.get("einheit");
+                }
+                zutatText = "\n" + zutat.get("anzahl") + einheit + " " + zutat.get("name");
                 text1 = text1 + zutatText;
             }
 

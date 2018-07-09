@@ -1,9 +1,9 @@
 package sample.Controller;
 
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -27,6 +27,7 @@ public class RezeptformularController implements Initializable {
     public TextField zutatEingabe;
     public TextArea textEingabe;
     public Spinner zutatAnzahlEingabe;
+    public ChoiceBox einheitChoiceBox;
 
     Stage stage = new Stage();
 
@@ -44,7 +45,10 @@ public class RezeptformularController implements Initializable {
         zutatEingabe.setStyle("-fx-prompt-text-fill: gray");
         textEingabe.setStyle("-fx-prompt-text-fill: gray");
 
-        zutatAnzahlEingabe.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 99, 1));
+        zutatAnzahlEingabe.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1000, 1));
+        zutatAnzahlEingabe.setEditable(true);
+        einheitChoiceBox.setItems(FXCollections.observableArrayList("", new Separator(), "kg", "g", new Separator(), "l", "ml"));
+
     }
 
     public void rezeptHinzufuegen (ActionEvent event) throws IOException {
@@ -99,11 +103,13 @@ public class RezeptformularController implements Initializable {
             zutatEingabe.setStyle("-fx-prompt-text-fill: red");
         }else {
             String name1 = zutatEingabe.getText();
+            String einheit = (String) einheitChoiceBox.getValue();
             int anzahl = (int) zutatAnzahlEingabe.getValue();
 
             JSONObject zutat = new JSONObject();
             zutat.put("name", name1);
             zutat.put("anzahl", anzahl);
+            zutat.put("einheit", einheit);
             zutaten.add(zutat);
 
             zutatEingabe.setPromptText("Zutatname");

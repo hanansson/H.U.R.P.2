@@ -10,14 +10,16 @@ public class Produkt {
 
     private SimpleStringProperty name;
     private SimpleStringProperty art;
+    private SimpleStringProperty einheit;
     DatePicker datum;
     Spinner<Integer> anzahl;
     private CheckBox auswahl;
 
 
-    public Produkt(String name, String art, Integer anzahl, LocalDate datum) {
+    public Produkt(String name, String art, String einheit, Integer anzahl, LocalDate datum) {
         this.name = new SimpleStringProperty(name);
         this.art = new SimpleStringProperty(art);
+        this.einheit = new SimpleStringProperty(einheit);
         this.datum = new DatePicker();
         this.auswahl = new CheckBox();
         this.anzahl = new Spinner();
@@ -46,6 +48,13 @@ public class Produkt {
         this.art.set(art);
     }
 
+    public String getEinheit(){
+        return einheit.get();
+    }
+
+    public void setEinheit(String einheit){
+        this.einheit.set(einheit);
+    }
 
     public DatePicker getDatum() {return datum; }
 

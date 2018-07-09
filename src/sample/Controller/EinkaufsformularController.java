@@ -1,14 +1,12 @@
 package sample.Controller;
 
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import org.json.simple.JSONObject;
 
@@ -27,6 +25,7 @@ public class EinkaufsformularController implements Initializable {
     public TextField nameEingabe;
     public TextField artEingabe;
     public Spinner anzahlEingabe;
+    public ChoiceBox einheitChoiceBox;
 
     JSONObject produktJ = new JSONObject();
 
@@ -38,7 +37,9 @@ public class EinkaufsformularController implements Initializable {
         nameEingabe.setPromptText("Produktname");
         artEingabe.setPromptText("Produktart");
 
-        anzahlEingabe.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 99));
+        anzahlEingabe.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1000));
+        anzahlEingabe.setEditable(true);
+        einheitChoiceBox.setItems(FXCollections.observableArrayList("", new Separator(), "kg", "g", new Separator(), "l", "ml"));
 
     }
 
@@ -53,10 +54,12 @@ public class EinkaufsformularController implements Initializable {
 
             String name = nameEingabe.getText();
             String art = artEingabe.getText();
+            String eimheit = (String) einheitChoiceBox.getValue();
             int anzahl = (int) anzahlEingabe.getValue();
             LocalDate datum = null;
             produktJ.put("name", name);
             produktJ.put("art", art);
+            produktJ.put("einheit", eimheit);
             produktJ.put("datum", datum);
             produktJ.put("anzahl", anzahl);
 
