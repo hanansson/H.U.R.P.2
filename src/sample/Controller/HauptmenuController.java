@@ -20,6 +20,7 @@ public class HauptmenuController {
     Stage stage = new Stage();
 
     public void oeffneVorratsliste(ActionEvent event) throws IOException {
+
         Parent root = FXMLLoader.load(getClass().getResource("/sample/fxml/vorratsliste.fxml"));
         stage.setTitle("H.U.R.P");
         Scene scene = new Scene(root);
@@ -47,6 +48,7 @@ public class HauptmenuController {
     }
 
     public void oeffneEinkaufsliste (ActionEvent event)throws IOException {
+
         Parent root = FXMLLoader.load(getClass().getResource("/sample/fxml/einkaufsliste.fxml"));
         stage.setTitle("H.U.R.P");
         Scene scene = new Scene(root);
@@ -60,7 +62,7 @@ public class HauptmenuController {
     }
 
     public void beenden (ActionEvent event){
+
         System.exit(0);
     }
-
 }

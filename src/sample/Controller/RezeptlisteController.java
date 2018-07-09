@@ -111,7 +111,7 @@ public class RezeptlisteController implements Initializable {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/sample/fxml/rezepttext.fxml"));
                     Parent root = null;
                     try {
-                        root = (Parent) loader.load();
+                        root = loader.load();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -172,8 +172,6 @@ public class RezeptlisteController implements Initializable {
 
             while ((s = br.readLine()) != null) {
 
-                //Rezept rezept = new Rezept();
-
                 try {
                     rezeptInfo = (JSONObject) parser.parse(s);
                 } catch (ParseException e) {
@@ -188,7 +186,6 @@ public class RezeptlisteController implements Initializable {
         writer.close();
 
         System.out.println(rezeptAlleInfos.size());
-        //boolean selected = false;
 
         ArrayList<JSONObject> rezeptnichtlöschen = new ArrayList<>();
         rezeptnichtlöschen.addAll(rezeptAlleInfos);
@@ -214,21 +211,6 @@ public class RezeptlisteController implements Initializable {
 
         final ObservableList<Rezept> rezepteObservableList = FXCollections.observableArrayList(rezepteSammlung);
         rezeptTabelle.setItems(rezepteObservableList);
-    }
-
-    public void zumHauptmenu (ActionEvent event) throws IOException {
-
-        Parent root = FXMLLoader.load(getClass().getResource("/sample/fxml/hauptmenu.fxml"));
-        stage.setTitle("H.U.R.P");
-        Scene scene = new Scene(root);
-        scene.getStylesheets().add("/sample/styling.css");
-        stage.setScene(scene);
-        stage.setResizable(false);
-        stage.sizeToScene();
-        stage.show();
-        stage = (Stage) zumHauptmenuButton.getScene().getWindow();
-        stage.close();
-
     }
 
     public void aussortieren (ActionEvent event) throws IOException {
@@ -271,13 +253,12 @@ public class RezeptlisteController implements Initializable {
             rezept.getTextAnzeigen().setText(name);
             rezept.getTextAnzeigen().setPrefWidth(2000);
             String finalText = text + "\n" + text1;
-            //rezept.getTextAnzeigen().setStyle("-fx-background-color: transparent");
             rezept.getTextAnzeigen().setOnMouseClicked( event1 -> {
 
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/sample/fxml/rezepttext.fxml"));
                 Parent root = null;
                 try {
-                    root = (Parent) loader.load();
+                    root = loader.load();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -329,5 +310,18 @@ public class RezeptlisteController implements Initializable {
         rezeptTabelle.setItems(rezepteObservableList);
     }
 
+    public void zumHauptmenu (ActionEvent event) throws IOException {
 
+        Parent root = FXMLLoader.load(getClass().getResource("/sample/fxml/hauptmenu.fxml"));
+        stage.setTitle("H.U.R.P");
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add("/sample/styling.css");
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.sizeToScene();
+        stage.show();
+        stage = (Stage) zumHauptmenuButton.getScene().getWindow();
+        stage.close();
+
+    }
 }

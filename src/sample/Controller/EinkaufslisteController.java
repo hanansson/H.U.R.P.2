@@ -300,7 +300,6 @@ public class EinkaufslisteController implements Initializable {
                     String datum1 = (String) produktJ.get("datum");
                     LocalDate datum2 = LocalDate.parse(datum1);
                     produktAusVorrat.getDatum().setValue(datum2);
-                    //System.out.println(produktJ.get("datum"));
                 } else {
                     produktAusVorrat.getDatum().setValue(null);
                 }
@@ -315,16 +314,13 @@ public class EinkaufslisteController implements Initializable {
 
                 for (Produkt produktAufEinkaufsliste : produkteAufEinkaufsliste) {
                     if (produktAufEinkaufsliste.getAuswahl().isSelected()) {
-                        //&&
                         if ((produktAufEinkaufsliste.getName()).equals(produktAusVorrat.getName())) {
                             produkteTemporärerListe.remove(produktAusVorrat);
 
                             int anzahl = (int) produktAusVorrat.getAnzahl().getValue();
                             int eingekauft = (int) produktAufEinkaufsliste.getAnzahl().getValue();
                             int gesamtanzahl = anzahl + eingekauft;
-                            //System.out.println(gesamtanzahl);
                             produktAusVorrat.getAnzahl().setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1000, gesamtanzahl));
-                            //System.out.println(produktAusVorrat.getAnzahl().getValue());
 
                             produkteTemporärerListe.add(produktAusVorrat);
                             produktAufEinkaufsliste.getAuswahl().setSelected(false);
@@ -364,9 +360,6 @@ public class EinkaufslisteController implements Initializable {
                 produktJ.put("art", art);
                 produktJ.put("einheit", einheit);
                 produktJ.put("anzahl", anzahl);
-
-                //System.out.println(produktJ.get("name"));
-                //System.out.println(produktJ.get("datum"));
 
                 bw.write(produktJ.toJSONString());
                 bw.newLine();
