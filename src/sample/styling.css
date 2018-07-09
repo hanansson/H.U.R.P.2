@@ -70,6 +70,15 @@
     -fx-background-color: rgba(83, 80, 82, 0.74);
 }
 
+.table-row-cell:filled:selected {
+    -fx-background: -fx-control-inner-background ;
+    -fx-background-color: rgba(83, 80, 82, 0.74);
+    -fx-table-cell-border-color: transparent;
+}
+.table-row-cell:odd:filled:selected {
+    -fx-background: -fx-control-inner-background-alt ;
+}
+
 .table-view {
     -fx-background-color: transparent;
     -fx-border-color: transparent;
