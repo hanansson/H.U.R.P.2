@@ -1,9 +1,6 @@
 package sample;
 
-import sample.Comparator.AnzahlComparator;
-import sample.Comparator.ArtComparator;
-import sample.Comparator.DateComparator;
-import sample.Comparator.NameComparator;
+import sample.Comparator.*;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -35,6 +32,11 @@ public class Quicksort {
         _quicksort(list, 0, list.size() - 1, comp);
     }
 
+    public void einheitquicksort(ArrayList<Produkt> list) {
+
+        Comparator<Produkt> comp = new EinheitComparator();
+        _quicksort(list, 0, list.size() - 1, comp);
+    }
 
     private static void _quicksort(ArrayList<Produkt> list, int leftIndex, int rightIndex, Comparator<Produkt> comparator) {
         if (leftIndex >= rightIndex) {

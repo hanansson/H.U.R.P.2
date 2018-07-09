@@ -13,17 +13,6 @@
 
 }
 
-/*.tab-pane{
-    -fx-background-color: rgba(83, 80, 82, 0.74);
-    -fx-body-color: rgba(83, 80, 82, 0.74);
-}
-
-.stageStyle{
-    -fx-background-color: rgba(83, 80, 82, 0.74);
-    -fx-background-opacity: 30;
-    -fx-text-fill: #ffffff;
-}*/
-
 .button {
     -fx-background-color: rgba(83, 80, 82, 0.74);
     -fx-background-opacity: 30;
@@ -89,6 +78,23 @@
     -fx-text-fill: white;
 }
 
+.table-view > .virtual-flow > .scroll-bar:vertical,
+.table-view > .virtual-flow > .scroll-bar:vertical > .track,
+.table-view > .virtual-flow > .scroll-bar:vertical > .track-background,
+.table-view > .virtual-flow > .scroll-bar:horizontal,
+.table-view > .virtual-flow > .scroll-bar:horizontal > .track,
+.table-view > .virtual-flow > .scroll-bar:horizontal > .track-background,
+.table-view .filler{
+    -fx-background-color: rgba(83, 80, 82, 0.74);
+    -fx-body-color: rgba(83, 80, 82, 0.74);
+    -fx-border-color: rgba(83, 80, 82, 0.74);
+}
+
+.table-view > .virtual-flow > .scroll-bar > .increment-button,
+.table-view > .virtual-flow > .scroll-bar > .decrement-button {
+    -fx-opacity: 0;
+}
+
 .date-picker,
 .date-picker .arrow-button,
 .date-picker-display-node {
@@ -134,30 +140,6 @@
 .choice-box .arrow-button{
     -fx-background-color: white;
 }
-
-/*.datepicker-button {
-
-.date-picker .input-line {
-
-
-.date-picker .input-focused-line {
-
-
-.datepicker .text-field {
-
-
-.date-picker-popup{
-
-
-.date-picker-popup .date-cell{
-
-
-.date-picker-popup .month-year-pane,
-.date-chooser,
-.date-cell,
-.datefield
-
-}*/
 
 .text-field {
     -fx-background-color: rgba(83, 80, 82, 0.74);

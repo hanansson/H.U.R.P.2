@@ -46,7 +46,6 @@ public class RezeptlisteController implements Initializable {
         auswahlColumn.setMinWidth(50);
         auswahlColumn.setMaxWidth(50);
 
-        //auswahlColumn.setGraphic(allesAuswählen);
         auswahlColumn.setSortable(false);
         auswahlColumn.setStyle( "-fx-alignment: CENTER;");
 
@@ -146,6 +145,8 @@ public class RezeptlisteController implements Initializable {
         Scene scene = new Scene(root);
         scene.getStylesheets().add("/sample/styling.css");
         stage.setScene(scene);
+        stage.setResizable(false);
+        stage.sizeToScene();
         stage.show();
         stage = (Stage) zumHauptmenuButton.getScene().getWindow();
         stage.close();
@@ -223,6 +224,8 @@ public class RezeptlisteController implements Initializable {
         Scene scene = new Scene(root);
         scene.getStylesheets().add("/sample/styling.css");
         stage.setScene(scene);
+        stage.setResizable(false);
+        stage.sizeToScene();
         stage.show();
         stage = (Stage) zumHauptmenuButton.getScene().getWindow();
         stage.close();
